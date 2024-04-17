@@ -95,7 +95,7 @@
     <xacro:if value="${simulation_engine == 'ignition-gazebo'}">
       <gazebo reference="${prefix}${camera_name}_orbbec_astra_link">
         <!-- https://github.com/orbbec/OrbbecSDK_ROS2#all-available-topics -->
-        <sensor type="camera" name="${ns}{prefix}${camera_name}_orbbec_astra_color">
+        <sensor type="camera" name="${ns}${prefix}${camera_name}_orbbec_astra_color">
           <always_on>true</always_on>
           <update_rate>30.0</update_rate>
 
