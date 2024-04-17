@@ -185,7 +185,7 @@
         should be more accurate for D435 - different frames and fovs can be set -->
       <gazebo reference="${prefix}${name}_link">
         <!-- https://github.com/IntelRealSense/realsense-ros#published-topics -->
-        <sensor type="camera" name="${ns}{prefix}${name}_intel_realsense_d435_color">
+        <sensor type="camera" name="${ns}${prefix}${name}_intel_realsense_d435_color">
           <always_on>true</always_on>
           <update_rate>30.0</update_rate>
 
