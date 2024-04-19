@@ -21,6 +21,14 @@
       <xacro:property name="prefix" value="${tf_prefix}_" />
     </xacro:unless>
 
+    <joint name="${parent_link.rstrip('_link')}_to_${prefix}${camera_name}_joint" type="fixed">
+      <origin xyz="${xyz}" rpy="${rpy}" />
+      <parent link="${parent_link}" />
+      <child link="${prefix}${camera_name}_link" />
+    </joint>
+
+    <link name="${prefix}${camera_name}_link" />
+
     <joint name="${parent_link.rstrip('_link')}_to_${prefix}${camera_name}_orbbec_astra_joint" type="fixed">
       <origin xyz="${xyz}" rpy="${rpy}" />
       <parent link="${parent_link}" />
@@ -62,7 +70,7 @@
 
     <joint name="${parent_link.rstrip('_link')}_to_${prefix}${camera_name}_color_joint" type="fixed">
       <origin xyz="-0.002 0.0125 0.03325" rpy="-0.003 0.0 -0.003" />
-      <parent link="${parent_link}" />
+      <parent link="${prefix}${camera_name}_link" />
       <child link="${prefix}${camera_name}_color_frame" />
     </joint>
 
@@ -70,7 +78,7 @@
 
     <joint name="${parent_link.rstrip('_link')}_to_${prefix}${camera_name}_depth_joint" type="fixed">
       <origin xyz="0.0 0.0 0.03325" rpy="0.0 0.0 0.0" />
-      <parent link="${parent_link}" />
+      <parent link="${prefix}${camera_name}_link" />
       <child link="${prefix}${camera_name}_depth_frame" />
     </joint>
 
