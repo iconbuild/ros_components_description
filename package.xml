@@ -33,6 +33,18 @@
     ros_gz_bridge
   </depend>
 
+  <depend condition="($HUSARION_ROS_BUILD_TYPE == simulation) and ($SIMULATION_ENGINE == ignition-gazebo)">
+    launch
+  </depend>
+
+  <depend condition="($HUSARION_ROS_BUILD_TYPE == simulation) and ($SIMULATION_ENGINE == ignition-gazebo)">
+    nav2_common
+  </depend>
+
+  <test_depend>ament_index_python</test_depend>
+  <test_depend>ament_python_pytest</test_depend>
+  <test_depend>python-yaml</test_depend>
+
   <export>
     <build_type>ament_cmake</build_type>
   </export>
