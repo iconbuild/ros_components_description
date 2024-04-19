@@ -14,14 +14,48 @@
 
 import os
 from launch import LaunchDescription
-from launch.actions import (
-    DeclareLaunchArgument,
-)
-
+from launch.actions import DeclareLaunchArgument, OpaqueFunction
 from launch_ros.actions import Node
 from launch.substitutions import EnvironmentVariable, LaunchConfiguration
 from nav2_common.launch import ReplaceString
 from ament_index_python import get_package_share_directory
+
+
+# The frame of the point cloud from ignition gazebo 6 isn't provided by <frame_id>.
+# See https://github.com/gazebosim/gz-sensors/issues/239
+def fix_depth_image_tf(context, *args, **kwargs):
+    robot_namespace = LaunchConfiguration("robot_namespace").perform(context)
+    device_namespace = LaunchConfiguration("device_namespace").perform(context)
+    tf_prefix = LaunchConfiguration("tf_prefix").perform(context)
+    camera_name = LaunchConfiguration("camera_name").perform(context)
+
+    device_namespace_ext = device_namespace + "/"
+    if device_namespace == "":
+        device_namespace_ext = ""
+
+    tf_prefix_ext = tf_prefix + "_"
+    if tf_prefix == "":
+        tf_prefix_ext = ""
+
+    parent_frame = tf_prefix_ext + camera_name + "_depth_optical_frame"
+    child_frame = (
+        "panther/base_link//"
+        + device_namespace_ext
+        + tf_prefix_ext
+        + camera_name
+        + "_orbbec_astra_depth"
+    )
+
+    static_transform_publisher = Node(
+        package="tf2_ros",
+        executable="static_transform_publisher",
+        name="point_cloud_tf",
+        output="log",
+        arguments=["0", "0", "0", "1.57", "-1.57", "0", parent_frame, child_frame],
+        parameters=[{"use_sim_time": True}],
+        namespace=robot_namespace,
+    )
+    return [static_transform_publisher]
 
 
 def generate_launch_description():
@@ -31,7 +65,6 @@ def generate_launch_description():
     )
 
     robot_namespace = LaunchConfiguration("robot_namespace")
-    tf_prefix = LaunchConfiguration("tf_prefix")
     device_namespace = LaunchConfiguration("device_namespace")
     camera_name = LaunchConfiguration("camera_name")
     gz_bridge_name = LaunchConfiguration("gz_bridge_name")
@@ -84,47 +117,6 @@ def generate_launch_description():
         output="screen",
     )
 
-    # The frame of the point cloud from ignition gazebo 6 isn't provided by <frame_id>.
-    # See https://github.com/gazebosim/gz-sensors/issues/239
-    #  panther/base_link//front_cam_ns/front_cam_tf_camera_depth_optical_frame
-    # panther/base_link//front_cam_ns/front_cam_tf_camera_depth_optical_frame
-    # panther/base_link//front_cam_ns/front_cam_tf_camera_orbbec_astra_depth
-    static_transform_publisher = Node(
-        package="tf2_ros",
-        executable="static_transform_publisher",
-        name="point_cloud_tf",
-        output="log",
-        arguments=[
-            "0",
-            "0",
-            "0",
-            "1.57",
-            "-1.57",
-            "0",
-            LaunchConfiguration(
-                "parent_frame", default=[tf_prefix, "_", camera_name, "_depth_optical_frame"]
-            ),
-            LaunchConfiguration(
-                "child_frame",
-                default=[
-                    "panther/base_link//",
-                    device_namespace,
-                    "/",
-                    tf_prefix,
-                    "_",
-                    camera_name,
-                    "_orbbec_astra_depth",
-                ],
-            ),
-        ],
-        remappings=[
-            ("/tf", "tf"),
-            ("/tf_static", "tf_static"),
-        ],
-        parameters=[{"use_sim_time": True}],
-        namespace=robot_namespace,
-    )
-
     return LaunchDescription(
         [
             declare_device_namespace,
@@ -133,6 +125,6 @@ def generate_launch_description():
             declare_camera_name,
             declare_gz_bridge_name,
             gz_bridge,
-            static_transform_publisher,
+            OpaqueFunction(function=fix_depth_image_tf),
         ]
     )

@@ -14,7 +14,6 @@
 
 import os
 import yaml
-
 from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
 from launch.actions import (
@@ -27,11 +26,16 @@ from launch.launch_description_sources import PythonLaunchDescriptionSource
 from launch.substitutions import LaunchConfiguration, EnvironmentVariable
 
 
-def get_value_or_none(node: yaml.Node, key: str):
+def get_value(node: yaml.Node, key: str):
     try:
-        return node[key]
+        value = node[key]
+        if value == "None":
+            value = ""
+        print(f"VALUUUUUUUE node[{key}] = {value}")
+        return value
+
     except KeyError:
-        return 'None'
+        return ""
 
 
 def get_launch_descriptions_from_yaml_node(
@@ -39,7 +43,6 @@ def get_launch_descriptions_from_yaml_node(
 ) -> IncludeLaunchDescription:
     actions = []
     for component in node["components"]:
-
         actions.append(
             IncludeLaunchDescription(
                 PythonLaunchDescriptionSource(
@@ -47,10 +50,10 @@ def get_launch_descriptions_from_yaml_node(
                 ),
                 launch_arguments={
                     "robot_namespace": namespace,
-                    "device_namespace": get_value_or_none(component, "namespace"),
-                    "tf_prefix": get_value_or_none(component, "tf_prefix"),
+                    "device_namespace": get_value(component, "namespace"),
+                    "tf_prefix": get_value(component, "tf_prefix"),
                     "gz_bridge_name": component["namespace"][1:] + "_gz_bridge",
-                    "camera_name": get_value_or_none(component, "name"),
+                    "camera_name": get_value(component, "name"),
                 }.items(),
             )
         )
