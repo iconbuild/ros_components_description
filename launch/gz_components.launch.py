@@ -31,7 +31,6 @@ def get_value(node: yaml.Node, key: str):
         value = node[key]
         if value == "None":
             value = ""
-        print(f"VALUUUUUUUE node[{key}] = {value}")
         return value
 
     except KeyError:
