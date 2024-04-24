@@ -4,9 +4,9 @@
                params="parent_link xyz rpy
                        use_gpu:=false
                        tf_prefix:=None
-                       topic:=scan
-                       frame_id:=velodyne
                        namespace:=None
+                       topic:=velodyne_points
+                       frame_id:=velodyne
                        simulation_engine:=gazebo-classic">
 
     <xacro:if value="${namespace == 'None'}">

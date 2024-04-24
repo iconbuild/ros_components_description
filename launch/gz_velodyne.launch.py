@@ -24,7 +24,7 @@ from ament_index_python import get_package_share_directory
 def generate_launch_description():
     ros_components_description = get_package_share_directory("ros_components_description")
     gz_bridge_config_path = os.path.join(
-        ros_components_description, "config", "gz_slamtec_rplidar_remappings.yaml"
+        ros_components_description, "config", "gz_velodyne_remappings.yaml"
     )
 
     robot_namespace = LaunchConfiguration("robot_namespace")

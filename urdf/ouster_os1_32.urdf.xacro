@@ -4,9 +4,17 @@
                params="parent_link xyz rpy
                        use_gpu:=false
                        tf_prefix:=None
-                       topic:=os_lidar
+                       namespace:=None
+                       topic:=ouster/points
                        frame_id:=os_lidar
                        simulation_engine:=gazebo-classic">
+
+    <xacro:if value="${namespace == 'None'}">
+      <xacro:property name="ns" value="" />
+    </xacro:if>
+    <xacro:unless value="${namespace == 'None'}">
+      <xacro:property name="ns" value="${namespace}/" />
+    </xacro:unless>
 
     <xacro:if value="${use_gpu}">
       <xacro:property name="ray_type" value="gpu_ray" />
@@ -63,7 +71,7 @@
     <link name="${prefix}${frame_id}" />
 
     <gazebo reference="${prefix}${frame_id}">
-      <sensor type="${ray_type}" name="${prefix}ouster_os1_32_sensor">
+      <sensor type="${ray_type}" name="${ns}${prefix}ouster_os1_32_sensor">
         <visualize>false</visualize>
         <ray>
           <scan>
@@ -95,14 +103,23 @@
 
         <update_rate>20.0</update_rate>
 
-        <plugin name="${prefix}ouster_os1_32_${ray_type}" filename="libgazebo_ros_ray_sensor.so">
-          <ros>
-            <namespace></namespace>
-            <remapping>~/out:=${topic}</remapping>
-          </ros>
-          <output_type>sensor_msgs/PointCloud2</output_type>
-          <frame_name>${prefix}${frame_id}</frame_name>
-        </plugin>
+        <xacro:if value="${simulation_engine == 'ignition-gazebo'}">
+          <topic>${ns}${topic}</topic>
+          <frame_id>${prefix}${frame_id}</frame_id>
+          <ignition_frame_id>${prefix}${frame_id}</ignition_frame_id>
+          <always_on>true</always_on>
+        </xacro:if>
+
+        <xacro:if value="${simulation_engine == 'gazebo-classic'}">
+          <plugin name="${prefix}ouster_os1_32_${ray_type}" filename="libgazebo_ros_ray_sensor.so">
+            <ros>
+              <namespace>${ns}</namespace>
+              <remapping>~/out:=${topic}</remapping>
+            </ros>
+            <output_type>sensor_msgs/PointCloud2</output_type>
+            <frame_name>${prefix}${frame_id}</frame_name>
+          </plugin>
+        </xacro:if>
       </sensor>
     </gazebo>
   </xacro:macro>

@@ -37,25 +37,36 @@ def get_value(node: yaml.Node, key: str):
         return ""
 
 
+def get_launch_description(name: str, package: str, namespace: str, component: yaml.Node):
+    return IncludeLaunchDescription(
+        PythonLaunchDescriptionSource([package, "/launch/gz_", name, ".launch.py"]),
+        launch_arguments={
+            "robot_namespace": namespace,
+            "device_namespace": get_value(component, "namespace"),
+            "tf_prefix": get_value(component, "tf_prefix"),
+            "gz_bridge_name": component["namespace"][1:] + "_gz_bridge",
+            "camera_name": get_value(component, "name"),
+        }.items(),
+    )
+
+
 def get_launch_descriptions_from_yaml_node(
     node: yaml.Node, package: os.PathLike, namespace: str
 ) -> IncludeLaunchDescription:
     actions = []
     for component in node["components"]:
-        actions.append(
-            IncludeLaunchDescription(
-                PythonLaunchDescriptionSource(
-                    [package, "/launch/", component["type"], ".launch.py"]
-                ),
-                launch_arguments={
-                    "robot_namespace": namespace,
-                    "device_namespace": get_value(component, "namespace"),
-                    "tf_prefix": get_value(component, "tf_prefix"),
-                    "gz_bridge_name": component["namespace"][1:] + "_gz_bridge",
-                    "camera_name": get_value(component, "name"),
-                }.items(),
-            )
-        )
+        if component["type"] == "LDR01" or component["type"] == "LDR06":
+            actions.append(get_launch_description("slamtec_rplidar", package, namespace, component))
+
+        if component["type"] == "LDR13":
+            actions.append(get_launch_description("ouster_os", package, namespace, component))
+
+        if component["type"] == "LDR20":
+            actions.append(get_launch_description("velodyne", package, namespace, component))
+
+        if component["type"] == "CAM01":
+            actions.append(get_launch_description("orbbec_astra", package, namespace, component))
+
 
     return actions
 

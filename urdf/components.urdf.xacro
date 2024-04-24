@@ -96,6 +96,40 @@
         />
       </xacro:if>
 
+      <xacro:if value="${type == 'LDR13'}">
+        <xacro:include
+          filename="$(find ros_components_description)/urdf/ouster_os1_32.urdf.xacro"
+          ns="lidar"
+        />
+
+        <xacro:lidar.ouster_os1_32
+          parent_link="${parent_link}"
+          xyz="${xyz}"
+          rpy="${rpy}"
+          tf_prefix="${tf_prefix}"
+          use_gpu="${use_gpu}"
+          simulation_engine="${simulation_engine}"
+          namespace="${fixed_namespace}"
+        />
+      </xacro:if>
+
+      <xacro:if value="${type == 'LDR20'}">
+        <xacro:include
+          filename="$(find ros_components_description)/urdf/velodyne_puck.urdf.xacro"
+          ns="lidar"
+        />
+
+        <xacro:lidar.velodyne_puck
+          parent_link="${parent_link}"
+          xyz="${xyz}"
+          rpy="${rpy}"
+          tf_prefix="${tf_prefix}"
+          use_gpu="${use_gpu}"
+          simulation_engine="${simulation_engine}"
+          namespace="${fixed_namespace}"
+        />
+      </xacro:if>
+
       <xacro:if value="${index}">
         <xacro:load_componenet
           counter="${index}"
