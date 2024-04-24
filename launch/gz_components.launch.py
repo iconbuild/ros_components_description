@@ -67,6 +67,9 @@ def launch_setup(context, *args, **kwargs):
     namespace = LaunchConfiguration("namespace").perform(context)
 
     components_config = None
+    if components_config_path == "None":
+        return []
+
     with open(os.path.join(components_config_path), 'r') as file:
         components_config = yaml.safe_load(file)
 
