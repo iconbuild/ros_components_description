@@ -37,7 +37,9 @@ def get_value(node: yaml.Node, key: str):
         return ""
 
 
-def get_launch_description(name: str, package: str, namespace: str, component: yaml.Node):
+def get_launch_description(
+    name: str, package: str, namespace: str, component: yaml.Node, controllers_file=""
+):
     return IncludeLaunchDescription(
         PythonLaunchDescriptionSource([package, "/launch/gz_", name, ".launch.py"]),
         launch_arguments={
@@ -46,6 +48,7 @@ def get_launch_description(name: str, package: str, namespace: str, component: y
             "tf_prefix": get_value(component, "tf_prefix"),
             "gz_bridge_name": component["namespace"][1:] + "_gz_bridge",
             "camera_name": get_value(component, "name"),
+            "controllers_file": controllers_file,
         }.items(),
     )
 
@@ -74,10 +77,26 @@ def get_launch_descriptions_from_yaml_node(
             component["type"] == "MAN04"
             # or component["type"] == "MAN03" # sim_isaac error
             or component["type"] == "MAN05"
-            or component["type"] == "MAN06"
-            or component["type"] == "MAN07"
         ):
-            actions.append(get_launch_description("kinova", package, namespace, component))
+            actions.append(
+                get_launch_description(
+                    "kinova",
+                    package,
+                    namespace,
+                    component,
+                    controllers_file="kinova_6dof_controllers.yaml",
+                )
+            )
+        if component["type"] == "MAN06" or component["type"] == "MAN07":
+            actions.append(
+                get_launch_description(
+                    "kinova",
+                    package,
+                    namespace,
+                    component,
+                    controllers_file="kinova_7dof_controllers.yaml",
+                )
+            )
 
     return actions
 

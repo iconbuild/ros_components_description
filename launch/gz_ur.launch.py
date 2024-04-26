@@ -24,10 +24,9 @@ def generate_launch_description():
     robot_namespace = LaunchConfiguration("robot_namespace")
     device_namespace = LaunchConfiguration("device_namespace")
     tf_prefix = LaunchConfiguration("tf_prefix")
-    controllers_file = LaunchConfiguration("controllers_file")
 
     initial_joint_controllers = PathJoinSubstitution(
-        [FindPackageShare("ros_components_description"), "config", controllers_file]
+        [FindPackageShare("ros_components_description"), "config", "ur_controllers.yaml"]
     )
 
     namespace_warn = LogInfo(
@@ -70,12 +69,6 @@ def generate_launch_description():
         description="Prefix added for all links of device. Here used as fix for static transform publisher.",
     )
 
-    declare_controllers_file = DeclareLaunchArgument(
-        "controllers_file",
-        default_value="ur_controllers.yaml",
-        description="YAML file with the controllers configuration.",
-    )
-
     # There may be other controllers of the joints, but this is the initially-started one
     initial_joint_controller_spawner_started = Node(
         package="controller_manager",
@@ -101,7 +94,6 @@ def generate_launch_description():
             declare_device_namespace,
             declare_robot_namespace,
             declare_tf_prefix,
-            declare_controllers_file,
             namespace_warn,
             initial_joint_controller_spawner_started,
         ]
