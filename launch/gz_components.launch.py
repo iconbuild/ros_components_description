@@ -67,11 +67,17 @@ def get_launch_descriptions_from_yaml_node(
         if component["type"] == "CAM01":
             actions.append(get_launch_description("orbbec_astra", package, namespace, component))
 
-        if component["type"] == "MAN01":
+        if component["type"] == "MAN01" or component["type"] == "MAN02":
             actions.append(get_launch_description("ur", package, namespace, component))
 
-        if component["type"] == "MAN02":
-            actions.append(get_launch_description("ur", package, namespace, component))
+        if (
+            component["type"] == "MAN04"
+            # or component["type"] == "MAN03" # sim_isaac error
+            or component["type"] == "MAN05"
+            or component["type"] == "MAN06"
+            or component["type"] == "MAN07"
+        ):
+            actions.append(get_launch_description("kinova", package, namespace, component))
 
     return actions
 

@@ -162,6 +162,81 @@
       </xacro:if>
 
 
+      <xacro:if value="${type == 'MAN04'}">
+        <xacro:include
+          filename="$(find ros_components_description)/urdf/kinova.urdf.xacro"
+          ns="manipulator"
+        />
+
+        <xacro:manipulator.kinova
+          parent_link="${parent_link}"
+          xyz="${xyz}"
+          rpy="${rpy}"
+          tf_prefix="${tf_prefix}"
+          kinova_type="gen3"
+          dof="6"
+          gripper="robotiq_2f_85"
+          vision="false"
+        />
+      </xacro:if>
+
+      <xacro:if value="${type == 'MAN05'}">
+        <xacro:include
+          filename="$(find ros_components_description)/urdf/kinova.urdf.xacro"
+          ns="manipulator"
+        />
+
+        <xacro:manipulator.kinova
+          parent_link="${parent_link}"
+          xyz="${xyz}"
+          rpy="${rpy}"
+          tf_prefix="${tf_prefix}"
+          kinova_type="gen3"
+          dof="6"
+          gripper="robotiq_2f_85"
+          vision="true"
+        />
+      </xacro:if>
+
+
+      <xacro:if value="${type == 'MAN06'}">
+        <xacro:include
+          filename="$(find ros_components_description)/urdf/kinova.urdf.xacro"
+          ns="manipulator"
+        />
+
+        <xacro:manipulator.kinova
+          parent_link="${parent_link}"
+          xyz="${xyz}"
+          rpy="${rpy}"
+          tf_prefix="${tf_prefix}"
+          kinova_type="gen3"
+          dof="7"
+          gripper="robotiq_2f_85"
+          vision="false"
+        />
+      </xacro:if>
+
+      <xacro:if value="${type == 'MAN07'}">
+        <xacro:include
+          filename="$(find ros_components_description)/urdf/kinova.urdf.xacro"
+          ns="manipulator"
+        />
+
+        <xacro:manipulator.kinova
+          parent_link="${parent_link}"
+          xyz="${xyz}"
+          rpy="${rpy}"
+          tf_prefix="${tf_prefix}"
+          kinova_type="gen3"
+          dof="7"
+          gripper="robotiq_2f_85"
+          vision="true"
+          namespace="${fixed_namespace}"
+        />
+      </xacro:if>
+
+
       <xacro:if value="${index}">
         <xacro:load_componenet
           counter="${index}"
