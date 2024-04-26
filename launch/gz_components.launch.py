@@ -67,6 +67,11 @@ def get_launch_descriptions_from_yaml_node(
         if component["type"] == "CAM01":
             actions.append(get_launch_description("orbbec_astra", package, namespace, component))
 
+        if component["type"] == "MAN01":
+            actions.append(get_launch_description("ur", package, namespace, component))
+
+        if component["type"] == "MAN02":
+            actions.append(get_launch_description("ur", package, namespace, component))
 
     return actions
 

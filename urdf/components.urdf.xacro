@@ -34,7 +34,8 @@
         <xacro:property name="fixed_namespace" value="None" scope="parent" />
       </xacro:if>
       <xacro:unless value="${device_namespace == 'None' and robot_namespace == 'None'}">
-        <xacro:property name="fixed_namespace" value="/${robot_namespace + device_namespace}" scope="parent" />
+        <xacro:property name="fixed_namespace" value="/${robot_namespace + device_namespace}"
+          scope="parent" />
       </xacro:unless>
 
       <xacro:if value="${device_namespace == 'None' and robot_namespace != 'None'}">
@@ -129,6 +130,37 @@
           namespace="${fixed_namespace}"
         />
       </xacro:if>
+
+      <xacro:if value="${type == 'MAN01'}">
+        <xacro:include
+          filename="$(find ros_components_description)/urdf/ur.urdf.xacro"
+          ns="manipulator"
+        />
+
+        <xacro:manipulator.ur
+          parent_link="${parent_link}"
+          xyz="${xyz}"
+          rpy="${rpy}"
+          tf_prefix="${tf_prefix}"
+          ur_type="ur3e"
+        />
+      </xacro:if>
+
+      <xacro:if value="${type == 'MAN02'}">
+        <xacro:include
+          filename="$(find ros_components_description)/urdf/ur.urdf.xacro"
+          ns="manipulator"
+        />
+
+        <xacro:manipulator.ur
+          parent_link="${parent_link}"
+          xyz="${xyz}"
+          rpy="${rpy}"
+          tf_prefix="${tf_prefix}"
+          ur_type="ur5e"
+        />
+      </xacro:if>
+
 
       <xacro:if value="${index}">
         <xacro:load_componenet
