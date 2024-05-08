@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://wiki.ros.org/xacro">
 
   <xacro:macro name="create_components"
-    params="components_config_path use_gpu simulation_engine namespace">
+    params="components_config_path namespace">
 
     <xacro:unless value="${components_config_path == 'None'}">
       <xacro:property name="components_config"
@@ -10,15 +10,13 @@
       <xacro:load_componenet
         config="${components_config}"
         counter="${len(components_config['components'])}"
-        use_gpu="${use_gpu}"
-        simulation_engine="${simulation_engine}"
         robot_namespace="${namespace}" />
 
     </xacro:unless>
   </xacro:macro>
 
   <xacro:macro name="load_componenet"
-    params="config counter use_gpu simulation_engine robot_namespace">
+    params="config counter robot_namespace">
     <xacro:if value="${counter}">
       <xacro:property name="index" value="${counter - 1}" scope="parent" />
       <xacro:property name="component" value="${config['components'][index]}" scope="parent" />
@@ -108,8 +106,6 @@
         <xacro:load_componenet
           counter="${index}"
           config="${config}"
-          use_gpu="${use_gpu}"
-          simulation_engine="${simulation_engine}"
           robot_namespace="${robot_namespace}"
         />
       </xacro:if>
