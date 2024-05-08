@@ -38,14 +38,20 @@ def get_value(node: yaml.Node, key: str):
 
 
 def get_launch_description(name: str, package: str, namespace: str, component: yaml.Node):
+    device_namespace = get_value(component, "device_namespace")
+    robot_namespace = namespace
+
+    if robot_namespace[0] != "/":
+        robot_namespace = "/" + robot_namespace
+    if device_namespace[0] != "/":
+        device_namespace = "/" + device_namespace
+
     return IncludeLaunchDescription(
         PythonLaunchDescriptionSource([package, "/launch/gz_", name, ".launch.py"]),
         launch_arguments={
-            "robot_namespace": namespace,
-            "device_namespace": get_value(component, "namespace"),
-            "tf_prefix": get_value(component, "tf_prefix"),
-            "gz_bridge_name": component["namespace"][1:] + "_gz_bridge",
-            "camera_name": get_value(component, "name"),
+            "robot_namespace": robot_namespace,
+            "device_namespace": device_namespace,
+            "gz_bridge_name": component["device_namespace"] + "_gz_bridge",
         }.items(),
     )
 
@@ -54,24 +60,24 @@ def get_launch_descriptions_from_yaml_node(
     node: yaml.Node, package: os.PathLike, namespace: str
 ) -> IncludeLaunchDescription:
     actions = []
+
+    components_types_with_names = {
+        "LDR01": "slamtec_rplidar",
+        "LDR06": "slamtec_rplidar",
+        "LDR13": "ouster_os",
+        "LDR20": "velodyne",
+        "CAM01": "orbbec_astra",
+        "MAN01": "ur",
+        "MAN02": "ur",
+    }
+
     for component in node["components"]:
-        if component["type"] == "LDR01" or component["type"] == "LDR06":
-            actions.append(get_launch_description("slamtec_rplidar", package, namespace, component))
-
-        if component["type"] == "LDR13":
-            actions.append(get_launch_description("ouster_os", package, namespace, component))
-
-        if component["type"] == "LDR20":
-            actions.append(get_launch_description("velodyne", package, namespace, component))
-
-        if component["type"] == "CAM01":
-            actions.append(get_launch_description("orbbec_astra", package, namespace, component))
-
-        if component["type"] == "MAN01":
-            actions.append(get_launch_description("ur", package, namespace, component))
-
-        if component["type"] == "MAN02":
-            actions.append(get_launch_description("ur", package, namespace, component))
+        component_type = component["type"]
+        if component_type in components_types_with_names:
+            launch_description = get_launch_description(
+                components_types_with_names[component_type], package, namespace, component
+            )
+            actions.append(launch_description)
 
     return actions
 

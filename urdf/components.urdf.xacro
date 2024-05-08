@@ -2,7 +2,7 @@
 <robot xmlns:xacro="http://wiki.ros.org/xacro">
 
   <xacro:macro name="create_components"
-    params="components_config_path use_gpu simulation_engine namespace">
+    params="components_config_path namespace">
 
     <xacro:unless value="${components_config_path == 'None'}">
       <xacro:property name="components_config"
@@ -10,15 +10,13 @@
       <xacro:load_componenet
         config="${components_config}"
         counter="${len(components_config['components'])}"
-        use_gpu="${use_gpu}"
-        simulation_engine="${simulation_engine}"
         robot_namespace="${namespace}" />
 
     </xacro:unless>
   </xacro:macro>
 
   <xacro:macro name="load_componenet"
-    params="config counter use_gpu simulation_engine robot_namespace">
+    params="config counter robot_namespace">
     <xacro:if value="${counter}">
       <xacro:property name="index" value="${counter - 1}" scope="parent" />
       <xacro:property name="component" value="${config['components'][index]}" scope="parent" />
@@ -27,24 +25,7 @@
       <xacro:property name="parent_link" value="${component['parent_link']}" scope="parent" />
       <xacro:property name="xyz" value="${component['xyz']}" scope="parent" />
       <xacro:property name="rpy" value="${component['rpy']}" scope="parent" />
-      <xacro:property name="tf_prefix" value="${component['tf_prefix']}" scope="parent" />
-      <xacro:property name="device_namespace" value="${component['namespace']}" scope="parent" />
-
-      <xacro:if value="${device_namespace == 'None' and robot_namespace == 'None'}">
-        <xacro:property name="fixed_namespace" value="None" scope="parent" />
-      </xacro:if>
-      <xacro:unless value="${device_namespace == 'None' and robot_namespace == 'None'}">
-        <xacro:property name="fixed_namespace" value="/${robot_namespace + device_namespace}"
-          scope="parent" />
-      </xacro:unless>
-
-      <xacro:if value="${device_namespace == 'None' and robot_namespace != 'None'}">
-        <xacro:property name="fixed_namespace" value="${robot_namespace}" scope="parent" />
-      </xacro:if>
-      <xacro:if value="${device_namespace != 'None' and robot_namespace == 'None'}">
-        <xacro:property name="fixed_namespace" value="${device_namespace}" scope="parent" />
-      </xacro:if>
-
+      <xacro:property name="device_namespace" value="${component['device_namespace']}" scope="parent" />
 
       <xacro:if value="${type == 'CAM01'}">
         <xacro:property name="camera_name" value="${component['name']}" scope="parent" />
@@ -56,10 +37,8 @@
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
-          tf_prefix="${tf_prefix}"
-          camera_name="${camera_name}"
-          simulation_engine="${simulation_engine}"
-          namespace="${fixed_namespace}"
+          namespace="${robot_namespace}"
+          device_namespace="${device_namespace}"
         />
       </xacro:if>
 
@@ -73,10 +52,8 @@
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
-          tf_prefix="${tf_prefix}"
-          use_gpu="${use_gpu}"
-          simulation_engine="${simulation_engine}"
-          namespace="${fixed_namespace}"
+          namespace="${robot_namespace}"
+          device_namespace="${device_namespace}"
         />
       </xacro:if>
 
@@ -90,10 +67,8 @@
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
-          tf_prefix="${tf_prefix}"
-          use_gpu="${use_gpu}"
-          simulation_engine="${simulation_engine}"
-          namespace="${fixed_namespace}"
+          namespace="${robot_namespace}"
+          device_namespace="${device_namespace}"
         />
       </xacro:if>
 
@@ -107,10 +82,8 @@
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
-          tf_prefix="${tf_prefix}"
-          use_gpu="${use_gpu}"
-          simulation_engine="${simulation_engine}"
-          namespace="${fixed_namespace}"
+          namespace="${robot_namespace}"
+          device_namespace="${device_namespace}"
         />
       </xacro:if>
 
@@ -124,10 +97,8 @@
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
-          tf_prefix="${tf_prefix}"
-          use_gpu="${use_gpu}"
-          simulation_engine="${simulation_engine}"
-          namespace="${fixed_namespace}"
+          namespace="${robot_namespace}"
+          device_namespace="${device_namespace}"
         />
       </xacro:if>
 
@@ -141,7 +112,7 @@
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
-          tf_prefix="${tf_prefix}"
+          device_namespace="${device_namespace}"
           ur_type="ur3e"
         />
       </xacro:if>
@@ -156,7 +127,7 @@
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
-          tf_prefix="${tf_prefix}"
+          device_namespace="${device_namespace}"
           ur_type="ur5e"
         />
       </xacro:if>
@@ -166,8 +137,6 @@
         <xacro:load_componenet
           counter="${index}"
           config="${config}"
-          use_gpu="${use_gpu}"
-          simulation_engine="${simulation_engine}"
           robot_namespace="${robot_namespace}"
         />
       </xacro:if>
