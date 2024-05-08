@@ -38,14 +38,20 @@ def get_value(node: yaml.Node, key: str):
 
 
 def get_launch_description(name: str, package: str, namespace: str, component: yaml.Node):
+    device_namespace = get_value(component, "device_namespace")
+    robot_namespace = namespace
+
+    if robot_namespace[0] != "/":
+        robot_namespace = "/" + robot_namespace
+    if device_namespace[0] != "/":
+        device_namespace = "/" + device_namespace
+
     return IncludeLaunchDescription(
         PythonLaunchDescriptionSource([package, "/launch/gz_", name, ".launch.py"]),
         launch_arguments={
-            "robot_namespace": namespace,
-            "device_namespace": get_value(component, "namespace"),
-            "tf_prefix": get_value(component, "tf_prefix"),
-            "gz_bridge_name": component["namespace"][1:] + "_gz_bridge",
-            "camera_name": get_value(component, "name"),
+            "robot_namespace": robot_namespace,
+            "device_namespace": device_namespace,
+            "gz_bridge_name": component["device_namespace"] + "_gz_bridge",
         }.items(),
     )
 
