@@ -65,44 +65,43 @@
 
     <link name="${prefix}laser" />
 
-    <xacro:if value="${simulation_engine == 'ignition-gazebo'}">
-      <gazebo reference="${prefix}laser">
-        <!-- gpu_lidar has to be set, CPU lidar doesn't work in ignition -
-        https://github.com/gazebosim/gz-sensors/issues/26 -->
-        <sensor type="gpu_lidar" name="${ns}${prefix}rplidar_s3_sensor">
+    <gazebo reference="${prefix}laser">
+      <!-- gpu_lidar has to be set, CPU lidar doesn't work in ignition -
+      https://github.com/gazebosim/gz-sensors/issues/26 -->
+      <sensor type="gpu_lidar" name="${ns}${prefix}rplidar_s3_sensor">
 
-          <topic>${ns}${device_ns}scan</topic>
-          <frame_id>${ns}${prefix}laser</frame_id>
-          <ignition_frame_id>${ns}${prefix}laser</ignition_frame_id>
+        <topic>${ns}${device_ns}scan</topic>
+        <frame_id>${ns}${prefix}laser</frame_id>
+        <ignition_frame_id>${ns}${prefix}laser</ignition_frame_id>
 
-          <update_rate>10.0</update_rate>
-          <ray>
-            <scan>
-              <horizontal>
-                <samples>3000</samples>
-                <resolution>1</resolution>
-                <min_angle>-${pi}</min_angle>
-                <max_angle>${pi}</max_angle>
-              </horizontal>
-            </scan>
-            <range>
-              <min>0.05</min>
-              <max>40.0</max>
-              <resolution>0.01</resolution>
-            </range>
-            <noise>
-              <type>gaussian</type>
-              <mean>0.0</mean>
-              <stddev>0.03</stddev>
-            </noise>
-          </ray>
-          <always_on>1</always_on>
-          <visualize>false</visualize>
-          <ros>
-            <namespace>${ns}${device_ns}</namespace>
-          </ros>
-        </sensor>
-      </gazebo>
-    </xacro:if>
+        <update_rate>10.0</update_rate>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>3000</samples>
+              <resolution>1</resolution>
+              <min_angle>-${pi}</min_angle>
+              <max_angle>${pi}</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.05</min>
+            <max>40.0</max>
+            <resolution>0.01</resolution>
+          </range>
+          <noise>
+            <type>gaussian</type>
+            <mean>0.0</mean>
+            <stddev>0.03</stddev>
+          </noise>
+        </ray>
+        <always_on>1</always_on>
+        <visualize>false</visualize>
+        <ros>
+          <namespace>${ns}${device_ns}</namespace>
+        </ros>
+      </sensor>
+    </gazebo>
+
   </xacro:macro>
 </robot>
