@@ -19,13 +19,20 @@
 <robot name="ur" xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:macro name="ur"
     params="parent_link xyz rpy
-          tf_prefix:=None
+          device_namespace:=None
           ur_type:=ur3e">
 
     <xacro:include
       filename="$(find ur_description)/urdf/ur_macro.xacro"
       ns="ur_manipulator"
     />
+
+    <xacro:if value="${device_namespace == 'None'}">
+      <xacro:property name="prefix" value="" />
+    </xacro:if>
+    <xacro:unless value="${device_namespace == 'None'}">
+      <xacro:property name="prefix" value="${device_namespace}_" />
+    </xacro:unless>
 
     <xacro:property name="joint_limit_params"
       value="$(find ur_description)/config/${ur_type}/joint_limits.yaml" scope="parent" />
@@ -44,7 +51,7 @@
 
     <xacro:ur_manipulator.ur_robot
       name="${ur_type}"
-      tf_prefix="${tf_prefix}"
+      tf_prefix="${prefix}"
       parent="${parent_link}"
       joint_limits_parameters_file="${joint_limit_params}"
       kinematics_parameters_file="${kinematics_params}"
@@ -57,11 +64,11 @@
     </xacro:ur_manipulator.ur_robot>
 
 
-    <ros2_control name="${tf_prefix + ur_type}" type="system">
+    <ros2_control name="${prefix + ur_type}" type="system">
       <hardware>
         <plugin>ign_ros2_control/IgnitionSystem</plugin>
       </hardware>
-      <joint name="${tf_prefix}shoulder_pan_joint">
+      <joint name="${prefix}shoulder_pan_joint">
         <command_interface name="position">
           <param name="min">{-2*pi}</param>
           <param name="max">{2*pi}</param>
@@ -77,7 +84,7 @@
         <state_interface name="velocity" />
         <state_interface name="effort" />
       </joint>
-      <joint name="${tf_prefix}shoulder_lift_joint">
+      <joint name="${prefix}shoulder_lift_joint">
         <command_interface name="position">
           <param name="min">{-2*pi}</param>
           <param name="max">{2*pi}</param>
@@ -93,7 +100,7 @@
         <state_interface name="velocity" />
         <state_interface name="effort" />
       </joint>
-      <joint name="${tf_prefix}elbow_joint">
+      <joint name="${prefix}elbow_joint">
         <command_interface name="position">
           <param name="min">{-pi}</param>
           <param name="max">{pi}</param>
@@ -109,7 +116,7 @@
         <state_interface name="velocity" />
         <state_interface name="effort" />
       </joint>
-      <joint name="${tf_prefix}wrist_1_joint">
+      <joint name="${prefix}wrist_1_joint">
         <command_interface name="position">
           <param name="min">{-2*pi}</param>
           <param name="max">{2*pi}</param>
@@ -125,7 +132,7 @@
         <state_interface name="velocity" />
         <state_interface name="effort" />
       </joint>
-      <joint name="${tf_prefix}wrist_2_joint">
+      <joint name="${prefix}wrist_2_joint">
         <command_interface name="position">
           <param name="min">{-2*pi}</param>
           <param name="max">{2*pi}</param>
@@ -141,7 +148,7 @@
         <state_interface name="velocity" />
         <state_interface name="effort" />
       </joint>
-      <joint name="${tf_prefix}wrist_3_joint">
+      <joint name="${prefix}wrist_3_joint">
         <command_interface name="position">
           <param name="min">{-2*pi}</param>
           <param name="max">{2*pi}</param>
