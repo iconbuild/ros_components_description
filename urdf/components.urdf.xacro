@@ -236,6 +236,33 @@
         />
       </xacro:if>
 
+      <xacro:if value="${type == 'GRP02'}">
+        <xacro:include filename="$(find robotiq_description)/urdf/robotiq_2f_85_macro.urdf.xacro"
+          ns="gripper" />
+
+        <xacro:gripper.robotiq_gripper name="${tf_prefix}robotiq_2f_85"
+          prefix="${tf_prefix}"
+          parent="${parent_link}"
+          use_fake_hardware="false"
+          sim_ignition="true"
+        >
+          <origin xyz="${xyz}" rpy="${rpy}" />
+        </xacro:gripper.robotiq_gripper>
+      </xacro:if>
+
+      <xacro:if value="${type == 'GRP03'}">
+        <xacro:include filename="$(find robotiq_description)/urdf/robotiq_2f_140_macro.urdf.xacro"
+          ns="gripper" />
+
+        <xacro:gripper.robotiq_gripper name="${tf_prefix}robotiq_2f_140"
+          prefix="${tf_prefix}"
+          parent="${parent_link}"
+          use_fake_hardware="false"
+          sim_ignition="true"
+        >
+          <origin xyz="${xyz}" rpy="${rpy}" />
+        </xacro:gripper.robotiq_gripper>
+      </xacro:if>
 
       <xacro:if value="${index}">
         <xacro:load_componenet

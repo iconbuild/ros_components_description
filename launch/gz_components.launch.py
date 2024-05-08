@@ -98,6 +98,10 @@ def get_launch_descriptions_from_yaml_node(
                 )
             )
 
+        if component["type"] == "GRP02":
+            actions.append(get_launch_description("robotiq", package, namespace, component))
+
+
     return actions
 
 
