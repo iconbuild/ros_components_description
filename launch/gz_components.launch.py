@@ -54,19 +54,22 @@ def get_launch_descriptions_from_yaml_node(
     node: yaml.Node, package: os.PathLike, namespace: str
 ) -> IncludeLaunchDescription:
     actions = []
+
+    components_types_with_names = {
+        "LDR01": "slamtec_rplidar",
+        "LDR06": "slamtec_rplidar",
+        "LDR13": "ouster_os",
+        "LDR20": "velodyne",
+        "CAM01": "orbbec_astra",
+    }
+
     for component in node["components"]:
-        if component["type"] == "LDR01" or component["type"] == "LDR06":
-            actions.append(get_launch_description("slamtec_rplidar", package, namespace, component))
-
-        if component["type"] == "LDR13":
-            actions.append(get_launch_description("ouster_os", package, namespace, component))
-
-        if component["type"] == "LDR20":
-            actions.append(get_launch_description("velodyne", package, namespace, component))
-
-        if component["type"] == "CAM01":
-            actions.append(get_launch_description("orbbec_astra", package, namespace, component))
-
+        component_type = component["type"]
+        if component_type in components_types_with_names:
+            launch_description = get_launch_description(
+                components_types_with_names[component_type], package, namespace, component
+            )
+            actions.append(launch_description)
 
     return actions
 
