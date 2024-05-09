@@ -23,7 +23,6 @@ from nav2_common.launch import ReplaceString
 def generate_launch_description():
     robot_namespace = LaunchConfiguration("robot_namespace")
     device_namespace = LaunchConfiguration("device_namespace")
-    tf_prefix = LaunchConfiguration("tf_prefix")
     start_joint_controller = LaunchConfiguration("start_joint_controller")
     initial_joint_controller = LaunchConfiguration("initial_joint_controller")
     controllers_file = LaunchConfiguration("controllers_file")
@@ -37,20 +36,20 @@ def generate_launch_description():
         condition= LaunchConfigurationNotEquals(robot_namespace, "None")
     )
 
-    # Using tf as namespace is caused by
-    # https://github.com/ros-controls/ros2_control/issues/1506
-    # After this fix the device_namespace should be used.
     namespaced_initial_joint_controllers_path = ReplaceString(
         source_file=initial_joint_controllers,
         replacements={
-            "shoulder_pan_joint": [tf_prefix, "shoulder_pan_joint"],
-            "shoulder_lift_joint": [tf_prefix, "shoulder_lift_joint"],
-            "elbow_joint": [tf_prefix, "elbow_joint"],
-            "wrist_1_joint": [tf_prefix, "wrist_1_joint"],
-            "wrist_2_joint": [tf_prefix, "wrist_2_joint"],
-            "wrist_3_joint": [tf_prefix, "wrist_3_joint"],
-            "tool0": [tf_prefix, "tool0"],
-            "  joint_trajectory_controller:": ["  ", tf_prefix, "joint_trajectory_controller:"],
+            "shoulder_pan_joint": [device_namespace, "_shoulder_pan_joint"],
+            "shoulder_lift_joint": [device_namespace, "_shoulder_lift_joint"],
+            "elbow_joint": [device_namespace, "_elbow_joint"],
+            "wrist_1_joint": [device_namespace, "_wrist_1_joint"],
+            "wrist_2_joint": [device_namespace, "_wrist_2_joint"],
+            "wrist_3_joint": [device_namespace, "_wrist_3_joint"],
+            "tool0": [device_namespace, "_tool0"],
+            # Using robot_namespace as prefix for controller name is caused by
+            # https://github.com/ros-controls/ros2_control/issues/1506
+            # After this fix only the device_namespace should be used.
+            "  joint_trajectory_controller:": ["  ", robot_namespace, "_", device_namespace, "_joint_trajectory_controller:"],
         },
     )
 
@@ -66,12 +65,6 @@ def generate_launch_description():
         description="Namespace which will appear in front of all topics (including /tf and /tf_static).",
     )
 
-    declare_tf_prefix = DeclareLaunchArgument(
-        "tf_prefix",
-        default_value="",
-        description="Prefix added for all links of device. Here used as fix for static transform publisher.",
-    )
-
     declare_start_joint_controller = DeclareLaunchArgument(
         "start_joint_controller",
         default_value="true",
@@ -80,7 +73,7 @@ def generate_launch_description():
 
     declare_initial_joint_controller = DeclareLaunchArgument(
         "initial_joint_controller",
-        default_value=[tf_prefix, "joint_trajectory_controller"],
+        default_value=[device_namespace, "joint_trajectory_controller"],
         description="Robot controller to start.",
     )
 
@@ -95,15 +88,18 @@ def generate_launch_description():
         package="controller_manager",
         executable="spawner",
         arguments=[
-            [tf_prefix, "joint_trajectory_controller"],
+            # Using robot_namespace as prefix for controller name is caused by
+            # https://github.com/ros-controls/ros2_control/issues/1506
+            # After this fix the device_namespace and --namespace should be used.
+            [robot_namespace, "_" , device_namespace, "_joint_trajectory_controller"],
             "-t",
             "joint_trajectory_controller/JointTrajectoryController",
             "-c",
             "controller_manager",
             "--controller-manager-timeout",
             "10",
-            "--namespace",
-            device_namespace,
+            # "--namespace",
+            # robot_namespace,
             "--param-file",
             namespaced_initial_joint_controllers_path,
         ],
@@ -122,7 +118,6 @@ def generate_launch_description():
         [
             declare_device_namespace,
             declare_robot_namespace,
-            declare_tf_prefix,
             declare_start_joint_controller,
             declare_initial_joint_controller,
             declare_controllers_file,

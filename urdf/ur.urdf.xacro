@@ -43,7 +43,7 @@
     <xacro:property name="visual_params"
       value="$(find ur_description)/config/${ur_type}/visual_parameters.yaml" scope="parent" />
     <xacro:property name="simulation_controllers"
-      value="$(find ur_simulation_gz)/config/ur_controllers.yaml" scope="parent" />
+      value="$(find ros_components_description)/config/ur_controllers.yaml" scope="parent" />
 
       <xacro:property name="initial_positions_file" default="$(find ur_description)/config/initial_positions.yaml" />
       <xacro:property name="initial_positions"
