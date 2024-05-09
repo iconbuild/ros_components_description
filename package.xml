@@ -21,26 +21,11 @@
   <depend>urdf</depend>
   <depend>xacro</depend>
 
-  <depend condition="($HUSARION_ROS_BUILD_TYPE == simulation) and ($SIMULATION_ENGINE == gazebo-classic)">
-    gazebo_plugins
-  </depend>
-
-  <depend condition="($HUSARION_ROS_BUILD_TYPE == simulation) and ($SIMULATION_ENGINE == ignition-gazebo)">
-    ros_gz_sim
-  </depend>
-
-  <depend condition="($HUSARION_ROS_BUILD_TYPE == simulation) and ($SIMULATION_ENGINE == ignition-gazebo)">
-    ros_gz_bridge
-  </depend>
-
-  <depend condition="($HUSARION_ROS_BUILD_TYPE == simulation) and ($SIMULATION_ENGINE == ignition-gazebo)">
-    launch
-  </depend>
-
-  <depend condition="($HUSARION_ROS_BUILD_TYPE == simulation) and ($SIMULATION_ENGINE == ignition-gazebo)">
-    nav2_common
-  </depend>
-
+  <depend condition="($HUSARION_ROS_BUILD_TYPE == simulation)">ros_gz_sim</depend>
+  <depend condition="($HUSARION_ROS_BUILD_TYPE == simulation)">ros_gz_bridge</depend>
+  <depend condition="($HUSARION_ROS_BUILD_TYPE == simulation)">launch</depend>
+  <depend condition="($HUSARION_ROS_BUILD_TYPE == simulation)">nav2_common</depend>
+  
   <test_depend>ament_index_python</test_depend>
   <test_depend>ament_python_pytest</test_depend>
   <test_depend>python-yaml</test_depend>
