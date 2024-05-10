@@ -68,7 +68,7 @@
     <gazebo reference="${prefix}laser">
       <!-- gpu_lidar has to be set, CPU lidar doesn't work in ignition -
       https://github.com/gazebosim/gz-sensors/issues/26 -->
-      <sensor type="gpu_lidar" name="${ns}${prefix}rplidar_s3_sensor">
+      <sensor type="gpu_lidar" name="${ns}${prefix}slamtec_rplidar_s3_sensor">
 
         <topic>${ns}${device_ns}scan</topic>
         <frame_id>${ns}${prefix}laser</frame_id>

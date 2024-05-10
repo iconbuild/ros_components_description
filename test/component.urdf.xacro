@@ -10,8 +10,6 @@
 
     <xacro:husarion_components.create_components
       components_config_path="${components_config_path_property}"
-      use_gpu="True"
-      simulation_engine="ignition-gazebo"
       namespace="None"
     />
   </xacro:unless>

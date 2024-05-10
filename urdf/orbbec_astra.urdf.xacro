@@ -2,8 +2,8 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
   <xacro:macro name="orbbec_astra"
                params="parent_link xyz rpy
-                       device_namespace:=camera
-                       namespace:=None">
+                       namespace:=None
+                       device_namespace:=camera">
 
     <xacro:if value="${namespace == 'None'}">
       <xacro:property name="ns" value="" />
@@ -91,7 +91,7 @@
 
     <link name="${device_namespace}_color_optical_frame" />
 
-    <gazebo reference="${device_namespace}_orbbec_astra_link">
+    <gazebo reference="${device_namespace}_link">
       <!-- https://github.com/orbbec/OrbbecSDK_ROS2#all-available-topics -->
       <sensor type="camera" name="${ns}${device_namespace}_orbbec_astra_color">
         <always_on>true</always_on>
@@ -143,7 +143,7 @@
           </noise>
         </camera>
         <ros>
-          <namespace>${ns}</namespace>
+          <namespace>${ns}${device_namespace}</namespace>
         </ros>
       </sensor>
     </gazebo>
