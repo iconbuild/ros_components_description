@@ -21,6 +21,8 @@
   <depend>urdf</depend>
   <depend>xacro</depend>
   <depend>ur_description</depend>
+  <depend>kortex_description</depend>
+  <depend>robotiq_description</depend>
 
   <depend condition="($HUSARION_ROS_BUILD_TYPE == simulation) and ($SIMULATION_ENGINE == gazebo-classic)">
     gazebo_plugins
@@ -40,6 +42,10 @@
 
   <depend condition="($HUSARION_ROS_BUILD_TYPE == simulation) and ($SIMULATION_ENGINE == ignition-gazebo)">
     nav2_common
+  </depend>
+
+  <depend condition="($HUSARION_ROS_BUILD_TYPE == simulation) and ($SIMULATION_ENGINE == ignition-gazebo)">
+    robotiq_controllers
   </depend>
 
   <test_depend>ament_index_python</test_depend>

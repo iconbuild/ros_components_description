@@ -41,7 +41,7 @@ def get_launch_description(name: str, package: str, namespace: str, component: y
     device_namespace = get_value(component, "device_namespace")
     robot_namespace = namespace
 
-    if name != "ur":
+    if not name.find("ur3") and not name.find("kinova"):
         if len(robot_namespace) and robot_namespace[0] != "/":
             robot_namespace = "/" + robot_namespace
         if len(device_namespace) and device_namespace[0] != "/":
@@ -70,6 +70,12 @@ def get_launch_descriptions_from_yaml_node(
         "CAM01": "orbbec_astra",
         "MAN01": "ur",
         "MAN02": "ur",
+        # "MAN03": "kinova_lite"  sim_isaac error
+        "MAN04": "kinova_6dof",
+        "MAN05": "kinova_6dof",
+        "MAN06": "kinova_7dof",
+        "MAN07": "kinova_7dof",
+        "GRP02": "robotiq",
     }
 
     for component in node["components"]:
