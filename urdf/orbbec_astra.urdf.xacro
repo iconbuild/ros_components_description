@@ -2,8 +2,8 @@
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
   <xacro:macro name="orbbec_astra"
                params="parent_link xyz rpy
-                       device_namespace:=camera
-                       namespace:=None">
+                       namespace:=None
+                       device_namespace:=camera">
 
     <xacro:if value="${namespace == 'None'}">
       <xacro:property name="ns" value="" />
@@ -143,7 +143,7 @@
           </noise>
         </camera>
         <ros>
-          <namespace>${ns}</namespace>
+          <namespace>${ns}${device_namespace}</namespace>
         </ros>
       </sensor>
     </gazebo>
