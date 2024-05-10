@@ -20,7 +20,6 @@
 <robot name="intel_realsense_d435" xmlns:xacro="http://ros.org/wiki/xacro">
   <xacro:macro name="intel_realsense_d435"
     params="parent_link xyz rpy
-            topic:=camera
             use_nominal_extrinsics:=false
             namespace:=None
             device_namespace:=camera">
