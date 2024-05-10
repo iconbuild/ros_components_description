@@ -28,7 +28,6 @@
       <xacro:property name="device_namespace" value="${component['device_namespace']}" scope="parent" />
 
       <xacro:if value="${type == 'CAM01'}">
-        <xacro:property name="camera_name" value="${component['name']}" scope="parent" />
         <xacro:include
           filename="$(find ros_components_description)/urdf/orbbec_astra.urdf.xacro"
           ns="camera" />
