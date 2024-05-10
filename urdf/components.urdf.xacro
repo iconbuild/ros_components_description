@@ -197,12 +197,11 @@
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
-          device_namespace="${device_namespace}"
           kinova_type="gen3"
           dof="7"
           gripper="robotiq_2f_85"
           vision="true"
-          namespace="${fixed_namespace}"
+          device_namespace="${device_namespace}"
         />
       </xacro:if>
 

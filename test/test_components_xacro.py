@@ -24,13 +24,23 @@ from ament_index_python.packages import get_package_share_directory
 ros_components_description = get_package_share_directory("ros_components_description")
 xacro_path = os.path.join(ros_components_description, "test/component.urdf.xacro")
 
-# Type: [model_link, sensor_link, sensor_name]
+# Type: [model_link, link_name, sensor_link_name, sensor_name]
 components_types_with_names = {
-    "LDR01": ["slamtec_rplidar_s1", "laser", "slamtec_rplidar_s1_sensor"],
-    "LDR06": ["slamtec_rplidar_s3", "laser", "slamtec_rplidar_s3_sensor"],
-    "LDR13": ["ouster_os1_32", "os_lidar", "ouster_os1_32_sensor"],
-    "LDR20": ["velodyne_puck", "velodyne", "velodyne_puck_sensor"],
-    "CAM01": ["orbbec_astra", "link", "orbbec_astra_color"],
+    "LDR01": ["slamtec_rplidar_s1", "laser", "laser", "slamtec_rplidar_s1_sensor"],
+    "LDR06": ["slamtec_rplidar_s3", "laser", "laser", "slamtec_rplidar_s3_sensor"],
+    "LDR13": ["ouster_os1_32", "os_lidar", "os_lidar", "ouster_os1_32_sensor"],
+    "LDR20": ["velodyne_puck", "velodyne", "velodyne", "velodyne_puck_sensor"],
+    "CAM01": ["orbbec_astra", "link", "link", "orbbec_astra_color"],
+    "MAN01": ["ur3e", "base_link", "", ""],
+    "MAN02": ["ur5e", "base_link", "", ""],
+    # "MAN03": ["kinova_lite",               "base_link",    "",         ""], use_isaac error
+    "MAN04": ["kinova_gen3_6dof", "base_link", "", ""],
+    "MAN05": ["kinova_gen3_6dof", "base_link", "camera_color_frame", "camera_sensor"],
+    "MAN06": ["kinova_gen3_7dof", "base_link", "", ""],
+    "MAN07": ["kinova_gen3_7dof", "base_link", "camera_color_frame", "camera_sensor"],
+    # "GRP01": [], not implemented in robotiq_description
+    "GRP02": ["robotiq", "robotiq_85_base_link", "", ""],
+    # "GRP03": ["robotiq", "robotiq_140_base_link", "", ""], not implemented in robotiq_description
 }
 
 
@@ -93,31 +103,35 @@ class ComponentsYamlParseUtils:
     def test_component(self, component: dict, expected_result: list, components_config_path: str):
         names = components_types_with_names[component["type"]]
         component_name = names[0]
-        sensor_reference = names[1]
-        sensor_name = names[2]
+        link_name = names[1]
+        sensor_link_name = names[2]
+        sensor_name = names[3]
 
         device_namespace = component["device_namespace"]
-        link_name = device_namespace + "_" + component_name + "_link"
-        sensor_name = device_namespace + "_" + sensor_name
-        sensor_link_name = device_namespace + "_" + sensor_reference
+        namespaced_link_name = device_namespace + "_" + link_name
+        namespaced_sensor_link_name = device_namespace + "_" + sensor_link_name
+        namespaced_sensor_name = device_namespace + "_" + sensor_name
 
         if self.does_urdf_parse() != expected_result[0]:
             assert (
                 False
             ), f"Expected prase result {expected_result[0]} with file {components_config_path} and component {component_name}."
 
-        if self.does_link_exist(self._urdf, link_name) != expected_result[1]:
+        if self.does_link_exist(self._urdf, namespaced_link_name) != expected_result[1]:
             assert (
                 False
-            ), f"Link name: {link_name}. Expected result {expected_result[1]} with file {components_config_path} and component {component_name}."
+            ), f"Link name: {namespaced_link_name}. Expected result {expected_result[1]} with file {components_config_path} and component {component_name}."
 
         if (
-            self.does_sensor_name_exist(self._urdf, sensor_link_name, sensor_name)
+            names[2] != ""
+            and self.does_sensor_name_exist(
+                self._urdf, namespaced_sensor_link_name, namespaced_sensor_name
+            )
             != expected_result[2]
         ):
             assert (
                 False
-            ), f"Sensor name: {sensor_name}, sensor link name: {sensor_link_name}. Expected result {expected_result[2]} with file {components_config_path} and component {component_name}."
+            ), f"Sensor name: {namespaced_sensor_name}, sensor link name: {namespaced_sensor_link_name}. Expected result {expected_result[2]} with file {components_config_path} and component {component_name}."
 
 
 def test_all_good_single_components(tmpdir_factory):

@@ -127,8 +127,8 @@
     </xacro:unless>
 
     <xacro:if value="${vision}">
-      <gazebo reference="${device_namespace}camera_color_frame">
-        <sensor name="${prefix}camera_sensor" type="rgbd_camera">
+      <gazebo reference="${device_namespace}_camera_color_frame">
+        <sensor name="${ns}${device_namespace}_camera_sensor" type="rgbd_camera">
           <camera>
             <horizontal_fov>1.047</horizontal_fov>
             <image>
@@ -178,9 +178,9 @@
                 <far>5</far>
               </clip>
             </depth_camera>
-            <optical_frame_id>${device_namespace}color_optical_frame</optical_frame_id>
+            <optical_frame_id>${device_namespace}_color_optical_frame</optical_frame_id>
           </camera>
-          <ignition_frame_id>${device_namespace}camera_color_frame</ignition_frame_id>
+          <ignition_frame_id>${device_namespace}_camera_color_frame</ignition_frame_id>
           <always_on>1</always_on>
           <update_rate>${camera_fps}</update_rate>
           <visualize>true</visualize>
