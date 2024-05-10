@@ -26,7 +26,7 @@
       <child link="${device_namespace}_orbbec_astra_link" />
     </joint>
 
-    <link name="${device_namespace}_orbbec_astra">
+    <link name="${device_namespace}_orbbec_astra_link">
       <visual>
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
         <geometry>
@@ -91,7 +91,7 @@
 
     <link name="${device_namespace}_color_optical_frame" />
 
-    <gazebo reference="${device_namespace}_orbbec_astra_link">
+    <gazebo reference="${device_namespace}_link">
       <!-- https://github.com/orbbec/OrbbecSDK_ROS2#all-available-topics -->
       <sensor type="camera" name="${ns}${device_namespace}_orbbec_astra_color">
         <always_on>true</always_on>

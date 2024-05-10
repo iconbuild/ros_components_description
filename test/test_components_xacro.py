@@ -30,7 +30,7 @@ components_types_with_names = {
     "LDR06": ["slamtec_rplidar_s3", "laser", "slamtec_rplidar_s3_sensor"],
     "LDR13": ["ouster_os1_32", "os_lidar", "ouster_os1_32_sensor"],
     "LDR20": ["velodyne_puck", "velodyne", "velodyne_puck_sensor"],
-    "CAM01": ["orbbec_astra", "orbbec_astra", "orbbec_astra_color"],
+    "CAM01": ["orbbec_astra", "link", "orbbec_astra_color"],
 }
 
 
@@ -135,5 +135,3 @@ def test_all_good_single_components(tmpdir_factory):
 
         for component in components["components"]:
             utils.test_component(component, [True, True, True], str(components_config_path))
-
-
