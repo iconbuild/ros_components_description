@@ -27,8 +27,8 @@
   <depend condition="($HUSARION_ROS_BUILD_TYPE == simulation)">nav2_common</depend>
   
   <test_depend>ament_index_python</test_depend>
-  <test_depend>ament_python_pytest</test_depend>
-  <test_depend>python-yaml</test_depend>
+  <test_depend>ament_cmake_pytest</test_depend>
+  <test_depend>python3-yaml</test_depend>
 
   <export>
     <build_type>ament_cmake</build_type>
