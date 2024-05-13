@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+
+  <xacro:macro name="create_components"
+    params="components_config_path namespace">
+
+    <xacro:unless value="${components_config_path == 'None'}">
+      <xacro:property name="components_config"
+        value="${xacro.load_yaml(components_config_path)}" />
+      <xacro:load_componenet
+        config="${components_config}"
+        counter="${len(components_config['components'])}"
+        robot_namespace="${namespace}" />
+
+    </xacro:unless>
+  </xacro:macro>
+
+  <xacro:macro name="load_componenet"
+    params="config counter robot_namespace">
+    <xacro:if value="${counter}">
+      <xacro:property name="index" value="${counter - 1}" scope="parent" />
+      <xacro:property name="component" value="${config['components'][index]}" scope="parent" />
+
+      <xacro:property name="type" value="${component['type']}" scope="parent" />
+      <xacro:property name="parent_link" value="${component['parent_link']}" scope="parent" />
+      <xacro:property name="xyz" value="${component['xyz']}" scope="parent" />
+      <xacro:property name="rpy" value="${component['rpy']}" scope="parent" />
+      <xacro:property name="device_namespace" value="${component['device_namespace']}" scope="parent" />
+
+      <xacro:if value="${type == 'CAM01'}">
+        <xacro:include
+          filename="$(find ros_components_description)/urdf/orbbec_astra.urdf.xacro"
+          ns="camera" />
+
+        <xacro:camera.orbbec_astra
+          parent_link="${parent_link}"
+          xyz="${xyz}"
+          rpy="${rpy}"
+          namespace="${robot_namespace}"
+          device_namespace="${device_namespace}"
+        />
+      </xacro:if>
+
+      <xacro:if value="${type == 'LDR01'}">
+        <xacro:include
+          filename="$(find ros_components_description)/urdf/slamtec_rplidar_s1.urdf.xacro"
+          ns="lidar"
+        />
+
+        <xacro:lidar.slamtec_rplidar_s1
+          parent_link="${parent_link}"
+          xyz="${xyz}"
+          rpy="${rpy}"
+          namespace="${robot_namespace}"
+          device_namespace="${device_namespace}"
+        />
+      </xacro:if>
+
+      <xacro:if value="${type == 'LDR06'}">
+        <xacro:include
+          filename="$(find ros_components_description)/urdf/slamtec_rplidar_s3.urdf.xacro"
+          ns="lidar"
+        />
+
+        <xacro:lidar.slamtec_rplidar_s3
+          parent_link="${parent_link}"
+          xyz="${xyz}"
+          rpy="${rpy}"
+          namespace="${robot_namespace}"
+          device_namespace="${device_namespace}"
+        />
+      </xacro:if>
+
+      <xacro:if value="${type == 'LDR13'}">
+        <xacro:include
+          filename="$(find ros_components_description)/urdf/ouster_os1_32.urdf.xacro"
+          ns="lidar"
+        />
+
+        <xacro:lidar.ouster_os1_32
+          parent_link="${parent_link}"
+          xyz="${xyz}"
+          rpy="${rpy}"
+          namespace="${robot_namespace}"
+          device_namespace="${device_namespace}"
+        />
+      </xacro:if>
+
+      <xacro:if value="${type == 'LDR20'}">
+        <xacro:include
+          filename="$(find ros_components_description)/urdf/velodyne_puck.urdf.xacro"
+          ns="lidar"
+        />
+
+        <xacro:lidar.velodyne_puck
+          parent_link="${parent_link}"
+          xyz="${xyz}"
+          rpy="${rpy}"
+          namespace="${robot_namespace}"
+          device_namespace="${device_namespace}"
+        />
+      </xacro:if>
+
+      <xacro:if value="${index}">
+        <xacro:load_componenet
+          counter="${index}"
+          config="${config}"
+          robot_namespace="${robot_namespace}"
+        />
+      </xacro:if>
+    </xacro:if>
+  </xacro:macro>
+</robot>
