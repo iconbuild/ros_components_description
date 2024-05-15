@@ -76,6 +76,8 @@ def get_launch_descriptions_from_yaml_node(
         "MAN06": "kinova_7dof",
         "MAN07": "kinova_7dof",
         "GRP02": "robotiq",
+        # "GRP03": "robotiq", Waiting for release
+        # https://github.com/PickNikRobotics/ros2_robotiq_gripper/blob/main/robotiq_description/urdf/robotiq_2f_85_macro.urdf.xacro
     }
 
     for component in node["components"]:
