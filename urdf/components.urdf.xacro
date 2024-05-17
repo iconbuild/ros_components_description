@@ -71,18 +71,99 @@
         />
       </xacro:if>
 
-      <xacro:if value="${type == 'LDR13'}">
+      <xacro:if value="${type == 'LDR10'}">
         <xacro:include
-          filename="$(find ros_components_description)/urdf/ouster_os1_32.urdf.xacro"
+          filename="$(find ros_components_description)/urdf/ouster_os01.urdf.xacro"
           ns="lidar"
         />
 
-        <xacro:lidar.ouster_os1_32
+        <xacro:lidar.ouster_os01
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
           namespace="${robot_namespace}"
           device_namespace="${device_namespace}"
+          model="os0_32"
+        />
+      </xacro:if>
+
+      <xacro:if value="${type == 'LDR11'}">
+        <xacro:include
+          filename="$(find ros_components_description)/urdf/ouster_os01.urdf.xacro"
+          ns="lidar"
+        />
+
+        <xacro:lidar.ouster_os01
+          parent_link="${parent_link}"
+          xyz="${xyz}"
+          rpy="${rpy}"
+          namespace="${robot_namespace}"
+          device_namespace="${device_namespace}"
+          model="os0_64"
+        />
+      </xacro:if>
+
+      <xacro:if value="${type == 'LDR12'}">
+        <xacro:include
+          filename="$(find ros_components_description)/urdf/ouster_os01.urdf.xacro"
+          ns="lidar"
+        />
+
+        <xacro:lidar.ouster_os01
+          parent_link="${parent_link}"
+          xyz="${xyz}"
+          rpy="${rpy}"
+          namespace="${robot_namespace}"
+          device_namespace="${device_namespace}"
+          model="os0_128"
+        />
+      </xacro:if>
+
+      <xacro:if value="${type == 'LDR13'}">
+        <xacro:include
+          filename="$(find ros_components_description)/urdf/ouster_os01.urdf.xacro"
+          ns="lidar"
+        />
+
+        <xacro:lidar.ouster_os01
+          parent_link="${parent_link}"
+          xyz="${xyz}"
+          rpy="${rpy}"
+          namespace="${robot_namespace}"
+          device_namespace="${device_namespace}"
+          model="os1_32"
+        />
+      </xacro:if>
+
+      <xacro:if value="${type == 'LDR14'}">
+        <xacro:include
+          filename="$(find ros_components_description)/urdf/ouster_os01.urdf.xacro"
+          ns="lidar"
+        />
+
+        <xacro:lidar.ouster_os01
+          parent_link="${parent_link}"
+          xyz="${xyz}"
+          rpy="${rpy}"
+          namespace="${robot_namespace}"
+          device_namespace="${device_namespace}"
+          model="os1_64"
+        />
+      </xacro:if>
+
+      <xacro:if value="${type == 'LDR15'}">
+        <xacro:include
+          filename="$(find ros_components_description)/urdf/ouster_os01.urdf.xacro"
+          ns="lidar"
+        />
+
+        <xacro:lidar.ouster_os01
+          parent_link="${parent_link}"
+          xyz="${xyz}"
+          rpy="${rpy}"
+          namespace="${robot_namespace}"
+          device_namespace="${device_namespace}"
+          model="os1_128"
         />
       </xacro:if>
 

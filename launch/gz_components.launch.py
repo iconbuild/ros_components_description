@@ -65,7 +65,12 @@ def get_launch_descriptions_from_yaml_node(
     components_types_with_names = {
         "LDR01": "slamtec_rplidar",
         "LDR06": "slamtec_rplidar",
+        "LDR10": "ouster_os",
+        "LDR11": "ouster_os",
+        "LDR12": "ouster_os",
         "LDR13": "ouster_os",
+        "LDR14": "ouster_os",
+        "LDR15": "ouster_os",
         "LDR20": "velodyne",
         "CAM01": "orbbec_astra",
         "MAN01": "ur",

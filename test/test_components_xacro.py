@@ -28,7 +28,12 @@ xacro_path = os.path.join(ros_components_description, "test/component.urdf.xacro
 components_types_with_names = {
     "LDR01": ["slamtec_rplidar_s1", "laser", "laser", "slamtec_rplidar_s1_sensor"],
     "LDR06": ["slamtec_rplidar_s3", "laser", "laser", "slamtec_rplidar_s3_sensor"],
+    "LDR10": ["ouster_os0_32", "os_lidar", "os_lidar", "ouster_os0_32_sensor"],
+    "LDR11": ["ouster_os0_64", "os_lidar", "os_lidar", "ouster_os0_64_sensor"],
+    "LDR12": ["ouster_os0_128", "os_lidar", "os_lidar", "ouster_os0_128_sensor"],
     "LDR13": ["ouster_os1_32", "os_lidar", "os_lidar", "ouster_os1_32_sensor"],
+    "LDR14": ["ouster_os1_64", "os_lidar", "os_lidar", "ouster_os1_64_sensor"],
+    "LDR15": ["ouster_os1_128", "os_lidar", "os_lidar", "ouster_os1_128_sensor"],
     "LDR20": ["velodyne_puck", "velodyne", "velodyne", "velodyne_puck_sensor"],
     "CAM01": ["orbbec_astra", "link", "link", "orbbec_astra_color"],
     "MAN01": ["ur3e", "base_link", "", ""],
