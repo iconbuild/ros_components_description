@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <xacro:macro name="ouster_os01"
+    <xacro:macro name="ouster"
                params="parent_link xyz rpy
                        model:=os1_32
                        namespace:=None
@@ -10,36 +10,42 @@
       <xacro:property name="vfov" value="${radians(90.0)}" scope="parent" />
       <xacro:property name="lidar_range" value="50" scope="parent"/>
       <xacro:property name="layers" value="32" scope="parent"/>
+      <xacro:property name="mesh" value="ouster_os01" scope="parent"/>
     </xacro:if>
 
     <xacro:if value="${model == 'os0_64'}">
       <xacro:property name="vfov" value="${radians(90.0)}" scope="parent" />
       <xacro:property name="lidar_range" value="50" scope="parent" />
       <xacro:property name="layers" value="64" scope="parent" />
+      <xacro:property name="mesh" value="ouster_os01" scope="parent"/>
     </xacro:if>
 
     <xacro:if value="${model == 'os0_128'}">
       <xacro:property name="vfov" value="${radians(90.0)}" scope="parent" />
       <xacro:property name="lidar_range" value="50" scope="parent" />
       <xacro:property name="layers" value="128" scope="parent" />
+      <xacro:property name="mesh" value="ouster_os01" scope="parent"/>
     </xacro:if>
 
     <xacro:if value="${model == 'os1_32'}">
       <xacro:property name="vfov" value="${radians(45.0)}" scope="parent" />
       <xacro:property name="lidar_range" value="120" scope="parent" />
       <xacro:property name="layers" value="32" scope="parent" />
+      <xacro:property name="mesh" value="ouster_os01" scope="parent"/>
     </xacro:if>
 
     <xacro:if value="${model == 'os1_64'}">
       <xacro:property name="vfov" value="${radians(45.0)}" scope="parent" />
       <xacro:property name="lidar_range" value="120" scope="parent" />
       <xacro:property name="layers" value="64" scope="parent" />
+      <xacro:property name="mesh" value="ouster_os01" scope="parent"/>
     </xacro:if>
 
     <xacro:if value="${model == 'os1_128'}">
       <xacro:property name="vfov" value="${radians(45.0)}" scope="parent" />
       <xacro:property name="lidar_range" value="120" scope="parent" />
       <xacro:property name="layers" value="128" scope="parent" />
+      <xacro:property name="mesh" value="ouster_os01" scope="parent"/>
     </xacro:if>
 
     <xacro:if value="${namespace == 'None'}">
@@ -73,7 +79,7 @@
       <visual>
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
         <geometry>
-          <mesh filename="package://ros_components_description/meshes/ouster_os01.dae" />
+          <mesh filename="package://ros_components_description/meshes/${mesh}.dae" />
         </geometry>
       </visual>
 
