@@ -41,6 +41,21 @@
         />
       </xacro:if>
 
+      <xacro:if value="${type == 'CAM03'}">
+        <xacro:include
+          filename="$(find ros_components_description)/urdf/stereolabs_zed.urdf.xacro"
+          ns="camera" />
+
+        <xacro:camera.zed_camera
+          parent_link="${parent_link}"
+          xyz="${xyz}"
+          rpy="${rpy}"
+          model="zed2"
+          namespace="${robot_namespace}"
+          device_namespace="${device_namespace}"
+        />
+      </xacro:if>
+
       <xacro:if value="${type == 'LDR01'}">
         <xacro:include
           filename="$(find ros_components_description)/urdf/slamtec_rplidar_s1.urdf.xacro"

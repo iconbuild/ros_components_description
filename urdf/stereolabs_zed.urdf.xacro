@@ -114,10 +114,10 @@
 
     <!-- Artificially Created Camera Center -->
     <link name="${device_namespace}_center_optical_frame" />
-    <joint name="${device_namespace}_center_joint" type="fixed">
+    <joint name="${device_namespace}_artificial_center_joint" type="fixed">
       <parent link="${device_namespace}_center" />
       <child link="${device_namespace}_center_optical_frame" />
-      <origin xyz="0.01 0 0" rpy="0 0 0" />
+      <origin xyz="0.05 0 0" rpy="0 0 0" />
     </joint>
 
     <!-- Left Camera -->
@@ -206,7 +206,7 @@
 
       <sensor type="depth_camera" name="${ns}${device_namespace}_stereolabs_zed_depth">
         <always_on>true</always_on>
-        <update_rate>30.0</update_rate>
+        <update_rate>10.0</update_rate>
 
         <topic>${ns}${device_namespace}/zed_node/depth</topic>
         <visualize>false</visualize>
