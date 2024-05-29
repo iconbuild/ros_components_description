@@ -41,7 +41,7 @@ def get_launch_description(name: str, package: str, namespace: str, component: y
     device_namespace = get_value(component, "device_namespace")
     robot_namespace = namespace
 
-    if not name.find("ur3") and not name.find("kinova"):
+    if  "ur3" not in name and "kinova" not in name and "robotiq" not in name:
         if len(robot_namespace) and robot_namespace[0] != "/":
             robot_namespace = "/" + robot_namespace
         if len(device_namespace) and device_namespace[0] != "/":
@@ -65,7 +65,12 @@ def get_launch_descriptions_from_yaml_node(
     components_types_with_names = {
         "LDR01": "slamtec_rplidar",
         "LDR06": "slamtec_rplidar",
+        "LDR10": "ouster_os",
+        "LDR11": "ouster_os",
+        "LDR12": "ouster_os",
         "LDR13": "ouster_os",
+        "LDR14": "ouster_os",
+        "LDR15": "ouster_os",
         "LDR20": "velodyne",
         "CAM01": "orbbec_astra",
         "MAN01": "ur",

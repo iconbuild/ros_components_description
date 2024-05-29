@@ -25,7 +25,8 @@
       <xacro:property name="parent_link" value="${component['parent_link']}" scope="parent" />
       <xacro:property name="xyz" value="${component['xyz']}" scope="parent" />
       <xacro:property name="rpy" value="${component['rpy']}" scope="parent" />
-      <xacro:property name="device_namespace" value="${component['device_namespace']}" scope="parent" />
+      <xacro:property name="device_namespace" value="${component['device_namespace']}"
+        scope="parent" />
 
       <xacro:if value="${type == 'CAM01'}">
         <xacro:include
@@ -71,18 +72,28 @@
         />
       </xacro:if>
 
-      <xacro:if value="${type == 'LDR13'}">
+      <xacro:property name="ouster_models_dict"
+        value="${dict ([
+        ('LDR10', 'os0_32'),
+        ('LDR11', 'os0_64'),
+        ('LDR12', 'os0_128'),
+        ('LDR13', 'os1_32'),
+        ('LDR14', 'os1_64'),
+        ('LDR15', 'os1_128')
+      ])}" />
+
+      <xacro:if value="${type in ouster_models_dict}">
         <xacro:include
-          filename="$(find ros_components_description)/urdf/ouster_os1_32.urdf.xacro"
+          filename="$(find ros_components_description)/urdf/ouster.urdf.xacro"
           ns="lidar"
         />
-
-        <xacro:lidar.ouster_os1_32
+        <xacro:lidar.ouster
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
           namespace="${robot_namespace}"
           device_namespace="${device_namespace}"
+          model="${ouster_models_dict[type]}"
         />
       </xacro:if>
 
