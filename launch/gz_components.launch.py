@@ -41,7 +41,7 @@ def get_launch_description(name: str, package: str, namespace: str, component: y
     device_namespace = get_value(component, "device_namespace")
     robot_namespace = namespace
 
-    if  "ur3" not in name and "kinova" not in name and "robotiq" not in name:
+    if "ur" not in name and "kinova" not in name and "robotiq" not in name:
         if len(robot_namespace) and robot_namespace[0] != "/":
             robot_namespace = "/" + robot_namespace
         if len(device_namespace) and device_namespace[0] != "/":

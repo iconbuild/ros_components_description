@@ -112,7 +112,7 @@
           <far>8.0</far>
         </clip>
         <ros>
-          <namespace>${ns}</namespace>
+          <namespace>${ns}${device_namespace}</namespace>
         </ros>
       </sensor>
 
