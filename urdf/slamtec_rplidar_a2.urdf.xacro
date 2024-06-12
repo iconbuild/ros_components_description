@@ -123,9 +123,6 @@
         </ray>
         <always_on>true</always_on>
         <visualize>false</visualize>
-        <ros>
-          <namespace>${ns}${device_ns}</namespace>
-        </ros>
       </sensor>
     </gazebo>
   </xacro:macro>

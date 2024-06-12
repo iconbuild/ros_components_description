@@ -199,9 +199,6 @@
             <far>300.0</far>
           </clip>
         </camera>
-        <ros>
-          <namespace>${ns}</namespace>
-        </ros>
       </sensor>
 
       <sensor type="depth_camera" name="${ns}${device_namespace}_stereolabs_zed_depth">
@@ -228,9 +225,7 @@
             <stddev>0.03</stddev>
           </noise>
         </camera>
-        <ros>
-          <namespace>${ns}${device_namespace}</namespace>
-        </ros>
+
       </sensor>
     </gazebo>
 

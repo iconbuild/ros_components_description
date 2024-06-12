@@ -28,6 +28,13 @@
       <xacro:property name="device_namespace" value="${component['device_namespace']}"
         scope="parent" />
 
+        <xacro:if value="${robot_namespace == ''}">
+          <xacro:property name="ns" value="None" scope="parent" />
+        </xacro:if>
+        <xacro:unless value="${robot_namespace == ''}">
+          <xacro:property name="ns" value="${robot_namespace}" scope="parent" />
+        </xacro:unless>
+
       <xacro:if value="${type == 'CAM01'}">
         <xacro:include
           filename="$(find ros_components_description)/urdf/orbbec_astra.urdf.xacro"
@@ -37,7 +44,7 @@
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
-          namespace="${robot_namespace}"
+          namespace="${ns}"
           device_namespace="${device_namespace}"
         />
       </xacro:if>
@@ -52,7 +59,7 @@
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
-          namespace="${robot_namespace}"
+          namespace="${ns}"
           device_namespace="${device_namespace}"
         />
       </xacro:if>
@@ -67,7 +74,7 @@
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
-          namespace="${robot_namespace}"
+          namespace="${ns}"
           device_namespace="${device_namespace}"
         />
       </xacro:if>
@@ -91,7 +98,7 @@
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
-          namespace="${robot_namespace}"
+          namespace="${ns}"
           device_namespace="${device_namespace}"
           model="${ouster_models_dict[type]}"
         />
@@ -107,7 +114,7 @@
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
-          namespace="${robot_namespace}"
+          namespace="${ns}"
           device_namespace="${device_namespace}"
         />
       </xacro:if>
@@ -153,7 +160,7 @@
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
-          namespace="${robot_namespace}"
+          namespace="${ns}"
           device_namespace="${device_namespace}"
           kinova_type="gen3"
           dof="6"
@@ -172,7 +179,7 @@
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
-          namespace="${robot_namespace}"
+          namespace="${ns}"
           device_namespace="${device_namespace}"
           kinova_type="gen3"
           dof="6"
@@ -191,7 +198,7 @@
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
-          namespace="${robot_namespace}"
+          namespace="${ns}"
           device_namespace="${device_namespace}"
           kinova_type="gen3"
           dof="7"
@@ -210,7 +217,7 @@
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
-          namespace="${robot_namespace}"
+          namespace="${ns}"
           kinova_type="gen3"
           dof="7"
           gripper="robotiq_2f_85"
@@ -227,7 +234,7 @@
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
-          namespace="${robot_namespace}"
+          namespace="${ns}"
           device_namespace="${device_namespace}"
           robotiq_type="2f_85"
         />

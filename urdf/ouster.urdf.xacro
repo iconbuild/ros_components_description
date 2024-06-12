@@ -146,11 +146,6 @@
         <frame_id>${ns}${prefix}os_lidar</frame_id>
         <ignition_frame_id>${ns}${prefix}os_lidar</ignition_frame_id>
         <always_on>true</always_on>
-
-        <ros>
-          <namespace>${ns}${device_ns}</namespace>
-        </ros>
-
       </sensor>
     </gazebo>
   </xacro:macro>

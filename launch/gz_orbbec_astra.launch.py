@@ -26,25 +26,15 @@ from ament_index_python import get_package_share_directory
 def fix_depth_image_tf(context, *args, **kwargs):
     robot_namespace = LaunchConfiguration("robot_namespace").perform(context)
     device_namespace = LaunchConfiguration("device_namespace").perform(context)
-    tf_prefix = LaunchConfiguration("tf_prefix").perform(context)
-    camera_name = LaunchConfiguration("camera_name").perform(context)
 
-    device_namespace_ext = device_namespace + "/"
-    if device_namespace == "":
-        device_namespace_ext = ""
+    if robot_namespace.startswith('/'):
+        robot_namespace = robot_namespace[1:] + "/"
 
-    tf_prefix_ext = tf_prefix + "_"
-    if tf_prefix == "":
-        tf_prefix_ext = ""
+    if device_namespace.startswith('/'):
+        device_namespace = device_namespace[1:]
 
-    parent_frame = tf_prefix_ext + camera_name + "_depth_optical_frame"
-    child_frame = (
-        "panther/base_link//"
-        + device_namespace_ext
-        + tf_prefix_ext
-        + camera_name
-        + "_orbbec_astra_depth"
-    )
+    parent_frame = robot_namespace + device_namespace + "_depth_optical_frame"
+    child_frame = "panther/base_link/" + robot_namespace + device_namespace + "_orbbec_astra_depth"
 
     static_transform_publisher = Node(
         package="tf2_ros",
@@ -66,7 +56,6 @@ def generate_launch_description():
 
     robot_namespace = LaunchConfiguration("robot_namespace")
     device_namespace = LaunchConfiguration("device_namespace")
-    camera_name = LaunchConfiguration("camera_name")
     gz_bridge_name = LaunchConfiguration("gz_bridge_name")
 
     namespaced_gz_bridge_config_path = ReplaceString(
@@ -74,7 +63,6 @@ def generate_launch_description():
         replacements={
             "<robot_namespace>": robot_namespace,
             "<device_namespace>": device_namespace,
-            "<camera_name>": camera_name,
         },
     )
 
@@ -84,22 +72,10 @@ def generate_launch_description():
         description="Sensor namespace that will appear before all non absolute topics and TF frames, used for distinguishing multiple cameras on the same robot.",
     )
 
-    declare_tf_prefix = DeclareLaunchArgument(
-        "tf_prefix",
-        default_value="",
-        description="Prefix added for all links of device. Here used as fix for static transform publisher.",
-    )
-
     declare_robot_namespace = DeclareLaunchArgument(
         "robot_namespace",
         default_value=EnvironmentVariable("ROBOT_NAMESPACE", default_value=""),
         description="Namespace which will appear in front of all topics (including /tf and /tf_static).",
-    )
-
-    declare_camera_name = DeclareLaunchArgument(
-        "camera_name",
-        default_value="camera",
-        description="Name of the camera. It will appear before all tfs and topics.",
     )
 
     declare_gz_bridge_name = DeclareLaunchArgument(
@@ -121,8 +97,6 @@ def generate_launch_description():
         [
             declare_device_namespace,
             declare_robot_namespace,
-            declare_tf_prefix,
-            declare_camera_name,
             declare_gz_bridge_name,
             gz_bridge,
             OpaqueFunction(function=fix_depth_image_tf),

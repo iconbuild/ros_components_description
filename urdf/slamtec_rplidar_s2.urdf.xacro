@@ -97,9 +97,6 @@
         </ray>
         <always_on>1</always_on>
         <visualize>false</visualize>
-        <ros>
-          <namespace>${ns}${device_ns}</namespace>
-        </ros>
       </sensor>
     </gazebo>
 

@@ -186,9 +186,6 @@
           <visualize>true</visualize>
           <topic>${ns}${device_namespace}/wrist_mounted_camera</topic>
           <enable_metrics>false</enable_metrics>
-          <ros>
-            <namespace>${ns}${device_namespace}</namespace>
-          </ros>
         </sensor>
       </gazebo>
 
