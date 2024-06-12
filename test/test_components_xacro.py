@@ -36,6 +36,9 @@ components_types_with_names = {
     "LDR15": ["ouster_os1_128", "os_lidar", "os_lidar", "ouster_os1_128_sensor"],
     "LDR20": ["velodyne_puck", "velodyne", "velodyne", "velodyne_puck_sensor"],
     "CAM01": ["orbbec_astra", "link", "link", "orbbec_astra_color"],
+    "CAM03": ["zed2", "center", "center_optical_frame", "stereolabs_zed_depth"],
+    "CAM04": ["zed2i", "center", "center_optical_frame", "stereolabs_zed_depth"],
+    "CAM06": ["zedi", "center", "center_optical_frame", "stereolabs_zed_depth"],
     "MAN01": ["ur3e", "base_link", "", ""],
     "MAN02": ["ur5e", "base_link", "", ""],
     # "MAN03": ["kinova_lite",               "base_link",    "",         ""], use_isaac error

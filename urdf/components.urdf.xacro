@@ -49,6 +49,28 @@
         />
       </xacro:if>
 
+      <xacro:property name="zed_models_dict"
+        value="${dict ([
+        ('CAM03', 'zed2'),
+        ('CAM04', 'zed2i'),
+        ('CAM06', 'zedx'),
+        ])}" />
+
+        <xacro:if value="${type in zed_models_dict}">
+        <xacro:include
+          filename="$(find ros_components_description)/urdf/stereolabs_zed.urdf.xacro"
+          ns="camera" />
+
+        <xacro:camera.zed_camera
+          parent_link="${parent_link}"
+          xyz="${xyz}"
+          rpy="${rpy}"
+          namespace="${ns}"
+          device_namespace="${device_namespace}"
+          model="${zed_models_dict[type]}"
+        />
+      </xacro:if>
+
       <xacro:if value="${type == 'LDR01'}">
         <xacro:include
           filename="$(find ros_components_description)/urdf/slamtec_rplidar_s1.urdf.xacro"
