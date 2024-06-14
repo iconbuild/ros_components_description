@@ -71,33 +71,25 @@
         />
       </xacro:if>
 
-      <xacro:if value="${type == 'LDR01'}">
+      <xacro:property name="rplidar_models_dict"
+        value="${dict ([
+        ('LDR01', 's1'),
+        ('LDR06', 's3'),
+      ])}" />
+
+      <xacro:if value="${type in rplidar_models_dict}">
         <xacro:include
-          filename="$(find ros_components_description)/urdf/slamtec_rplidar_s1.urdf.xacro"
+          filename="$(find ros_components_description)/urdf/slamtec_rplidar.urdf.xacro"
           ns="lidar"
         />
 
-        <xacro:lidar.slamtec_rplidar_s1
+        <xacro:lidar.slamtec_rplidar
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
           namespace="${ns}"
           device_namespace="${device_namespace}"
-        />
-      </xacro:if>
-
-      <xacro:if value="${type == 'LDR06'}">
-        <xacro:include
-          filename="$(find ros_components_description)/urdf/slamtec_rplidar_s3.urdf.xacro"
-          ns="lidar"
-        />
-
-        <xacro:lidar.slamtec_rplidar_s3
-          parent_link="${parent_link}"
-          xyz="${xyz}"
-          rpy="${rpy}"
-          namespace="${ns}"
-          device_namespace="${device_namespace}"
+          model="${rplidar_models_dict[type]}"
         />
       </xacro:if>
 
