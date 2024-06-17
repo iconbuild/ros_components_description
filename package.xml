@@ -17,20 +17,19 @@
 
   <buildtool_depend>ament_cmake</buildtool_depend>
 
-  <depend>robot_state_publisher</depend>
-  <depend>urdf</depend>
-  <depend>xacro</depend>
-  <depend>ur_description</depend>
   <depend>kortex_description</depend>
-  <depend>robotiq_description</depend>
-
-  <depend condition="($HUSARION_ROS_BUILD_TYPE == simulation)">ros_gz_sim</depend>
-  <depend condition="($HUSARION_ROS_BUILD_TYPE == simulation)">ros_gz_bridge</depend>
   <depend condition="($HUSARION_ROS_BUILD_TYPE == simulation)">launch</depend>
   <depend condition="($HUSARION_ROS_BUILD_TYPE == simulation)">nav2_common</depend>
+  <depend>robot_state_publisher</depend>
+  <depend>robotiq_description</depend>
+  <depend condition="($HUSARION_ROS_BUILD_TYPE == simulation)">ros_gz_bridge</depend>
+  <depend condition="($HUSARION_ROS_BUILD_TYPE == simulation)">ros_gz_sim</depend>
+  <depend>ur_description</depend>
+  <depend>urdf</depend>
+  <depend>xacro</depend>
 
-  <test_depend>ament_index_python</test_depend>
   <test_depend>ament_cmake_pytest</test_depend>
+  <test_depend>ament_index_python</test_depend>
   <test_depend>python3-yaml</test_depend>
 
   <export>

@@ -28,12 +28,26 @@
       <xacro:property name="device_namespace" value="${component['device_namespace']}"
         scope="parent" />
 
-        <xacro:if value="${robot_namespace == ''}">
-          <xacro:property name="ns" value="None" scope="parent" />
-        </xacro:if>
-        <xacro:unless value="${robot_namespace == ''}">
-          <xacro:property name="ns" value="${robot_namespace}" scope="parent" />
-        </xacro:unless>
+      <xacro:if value="${robot_namespace == ''}">
+        <xacro:property name="ns" value="None" scope="parent" />
+      </xacro:if>
+      <xacro:unless value="${robot_namespace == ''}">
+        <xacro:property name="ns" value="${robot_namespace}" scope="parent" />
+      </xacro:unless>
+
+      <xacro:if value="${type == 'ANT02'}">
+        <xacro:include
+          filename="$(find ros_components_description)/urdf/teltonika_003R-00253.urdf.xacro"
+          ns="teltonika" />
+
+        <xacro:teltonika.teltonika_003R-00253
+          parent_link="${parent_link}"
+          xyz="${xyz}"
+          rpy="${rpy}"
+          namespace="${ns}"
+          device_namespace="${device_namespace}"
+        />
+      </xacro:if>
 
       <xacro:if value="${type == 'CAM01'}">
         <xacro:include

@@ -19,41 +19,14 @@ from launch_ros.actions import Node
 from nav2_common.launch import ReplaceString
 
 from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument, OpaqueFunction
+from launch.actions import DeclareLaunchArgument
 from launch.substitutions import EnvironmentVariable, LaunchConfiguration
-
-
-# The frame of the point cloud from ignition gazebo 6 isn't provided by <frame_id>.
-# See https://github.com/gazebosim/gz-sensors/issues/239
-def fix_depth_image_tf(context, *args, **kwargs):
-    robot_namespace = LaunchConfiguration("robot_namespace").perform(context)
-    device_namespace = LaunchConfiguration("device_namespace").perform(context)
-
-    if robot_namespace.startswith('/'):
-        robot_namespace = robot_namespace[1:] + "/"
-
-    if device_namespace.startswith('/'):
-        device_namespace = device_namespace[1:]
-
-    parent_frame = robot_namespace + device_namespace + "_depth_optical_frame"
-    child_frame = "panther/base_link/" + robot_namespace + device_namespace + "_orbbec_astra_depth"
-
-    static_transform_publisher = Node(
-        package="tf2_ros",
-        executable="static_transform_publisher",
-        name="point_cloud_tf",
-        output="log",
-        arguments=["0", "0", "0", "1.57", "-1.57", "0", parent_frame, child_frame],
-        parameters=[{"use_sim_time": True}],
-        namespace=robot_namespace,
-    )
-    return [static_transform_publisher]
 
 
 def generate_launch_description():
     ros_components_description = get_package_share_directory("ros_components_description")
     gz_bridge_config_path = os.path.join(
-        ros_components_description, "config", "gz_orbbec_astra_remappings.yaml"
+        ros_components_description, "config", "gz_teltonika_remappings.yaml"
     )
 
     robot_namespace = LaunchConfiguration("robot_namespace")
@@ -101,6 +74,5 @@ def generate_launch_description():
             declare_robot_namespace,
             declare_gz_bridge_name,
             gz_bridge,
-            OpaqueFunction(function=fix_depth_image_tf),
         ]
     )

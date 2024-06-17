@@ -13,17 +13,18 @@
 # limitations under the License.
 
 import os
+
 import yaml
 from ament_index_python.packages import get_package_share_directory
+
 from launch import LaunchDescription
 from launch.actions import (
     DeclareLaunchArgument,
     IncludeLaunchDescription,
     OpaqueFunction,
 )
-
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration, EnvironmentVariable
+from launch.substitutions import EnvironmentVariable, LaunchConfiguration
 
 
 def get_value(node: yaml.Node, key: str):
@@ -63,6 +64,7 @@ def get_launch_descriptions_from_yaml_node(
     actions = []
 
     components_types_with_names = {
+        "ANT02": "teltonika",
         "LDR01": "slamtec_rplidar",
         "LDR06": "slamtec_rplidar",
         "LDR10": "ouster_os",
@@ -109,11 +111,11 @@ def launch_setup(context, *args, **kwargs):
     if components_config_path == "None":
         return []
 
-    with open(os.path.join(components_config_path), 'r') as file:
+    with open(os.path.join(components_config_path)) as file:
         components_config = yaml.safe_load(file)
 
     actions = []
-    if components_config != None:
+    if components_config is not None:
         actions += get_launch_descriptions_from_yaml_node(
             components_config, ros_components_description, namespace
         )

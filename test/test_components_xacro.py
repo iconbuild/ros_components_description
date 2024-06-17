@@ -13,11 +13,12 @@
 # limitations under the License.
 
 
+import os
+import xml
 import xml.dom
 import xml.dom.minidom
-import os
+
 import xacro
-import xml
 import yaml
 from ament_index_python.packages import get_package_share_directory
 
@@ -84,26 +85,26 @@ class ComponentsYamlParseUtils:
             self._urdf = xacro.process_file(
                 xacro_path, mappings={"components_config_path": self.components_config_path}
             )
-        except xacro.XacroException as e:
+        except xacro.XacroException:
             return False
         return True
 
     def does_link_exist(self, doc: xml.dom.minidom.Document, link_name: str) -> bool:
-        links = doc.getElementsByTagName('link')
+        links = doc.getElementsByTagName("link")
         for link in links:
-            if link.getAttribute('name') == link_name:
+            if link.getAttribute("name") == link_name:
                 return True
         return False
 
     def does_sensor_name_exist(
         self, doc: xml.dom.minidom.Document, link_name: str, sensor_name: str
     ) -> bool:
-        gazebos_tags = doc.getElementsByTagName('gazebo')
+        gazebos_tags = doc.getElementsByTagName("gazebo")
         for tag in gazebos_tags:
-            if tag.getAttribute('reference') == link_name:
-                sensors = doc.getElementsByTagName('sensor')
+            if tag.getAttribute("reference") == link_name:
+                sensors = doc.getElementsByTagName("sensor")
                 for sensor in sensors:
-                    if sensor.getAttribute('name') == sensor_name:
+                    if sensor.getAttribute("name") == sensor_name:
                         return True
 
         return False
