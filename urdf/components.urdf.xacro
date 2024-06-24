@@ -41,6 +41,20 @@
         />
       </xacro:if>
 
+      <xacro:if value="${type == 'CAM02'}">
+        <xacro:include
+          filename="$(find ros_components_description)/urdf/luxonis_oak.urdf.xacro"
+          ns="camera" />
+
+        <xacro:camera.oak
+          parent_link="${parent_link}"
+          xyz="${xyz}"
+          rpy="${rpy}"
+          namespace="${robot_namespace}"
+          device_namespace="${device_namespace}"
+        />
+      </xacro:if>
+
       <xacro:if value="${type == 'LDR01'}">
         <xacro:include
           filename="$(find ros_components_description)/urdf/slamtec_rplidar_s1.urdf.xacro"
@@ -48,6 +62,21 @@
         />
 
         <xacro:lidar.slamtec_rplidar_s1
+          parent_link="${parent_link}"
+          xyz="${xyz}"
+          rpy="${rpy}"
+          namespace="${robot_namespace}"
+          device_namespace="${device_namespace}"
+        />
+      </xacro:if>
+
+      <xacro:if value="${type == 'LDR02'}">
+        <xacro:include
+          filename="$(find ros_components_description)/urdf/slamtec_rplidar_s2.urdf.xacro"
+          ns="lidar"
+        />
+
+        <xacro:lidar.slamtec_rplidar_s2
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"

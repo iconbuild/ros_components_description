@@ -64,10 +64,12 @@ def get_launch_descriptions_from_yaml_node(
 
     components_types_with_names = {
         "LDR01": "slamtec_rplidar",
+        "LDR02": "slamtec_rplidar",
         "LDR06": "slamtec_rplidar",
         "LDR13": "ouster_os",
         "LDR20": "velodyne",
         "CAM01": "orbbec_astra",
+        "CAM02": "oak",
         "MAN01": "ur",
         "MAN02": "ur",
         # "MAN03": "kinova_lite"  sim_isaac error
