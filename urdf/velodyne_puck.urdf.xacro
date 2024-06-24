@@ -103,10 +103,6 @@
         <frame_id>${ns}${prefix}velodyne</frame_id>
         <ignition_frame_id>${ns}${prefix}velodyne</ignition_frame_id>
         <always_on>true</always_on>
-
-        <ros>
-          <namespace>${ns}${device_ns}</namespace>
-        </ros>
       </sensor>
     </gazebo>
   </xacro:macro>

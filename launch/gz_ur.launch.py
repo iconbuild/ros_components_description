@@ -12,17 +12,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from launch_ros.actions import Node
+from launch_ros.substitutions import FindPackageShare
+from nav2_common.launch import ReplaceString
+
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
-from launch_ros.actions import Node
 from launch.substitutions import (
     EnvironmentVariable,
     LaunchConfiguration,
     PathJoinSubstitution,
     PythonExpression,
 )
-from launch_ros.substitutions import FindPackageShare
-from nav2_common.launch import ReplaceString
 
 
 def generate_launch_description():

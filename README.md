@@ -24,10 +24,10 @@ To include the sensor, use the following code:
 
 ```xml
 <!-- include file with definition of xacro macro of sensor -->
-<xacro:include filename="$(find ros_components_description)/urdf/slamtec_rplidar_s1.urdf.xacro" ns="lidar" />
+<xacro:include filename="$(find ros_components_description)/urdf/slamtec_rplidar.urdf.xacro" ns="lidar" />
 
 <!-- evaluate the macro and place the sensor on robot -->
-<xacro:lidar.slamtec_rplidar_s1
+<xacro:lidar.slamtec_rplidar
   parent_link="cover_link"
   xyz="0.0 0.0 0.0"
   rpy="0.0 0.0 0.0" />

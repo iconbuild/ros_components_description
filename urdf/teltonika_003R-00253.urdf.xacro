@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro">
+  <xacro:macro
+    name="teltonika_003R-00253"
+    params="parent_link xyz rpy
+            namespace:=None
+            device_namespace:=gps">
+
+    <xacro:if value="${namespace == 'None'}">
+      <xacro:property name="ns" value="" />
+    </xacro:if>
+    <xacro:unless value="${namespace == 'None'}">
+      <xacro:property name="ns" value="${namespace}/" />
+    </xacro:unless>
+
+    <joint name="${parent_link.rstrip('_link')}_to_antenna_joint"
+      type="fixed">
+      <origin xyz="${xyz}" rpy="${rpy}" />
+      <parent link="${parent_link}" />
+      <child link="${device_namespace}_mounting_point" />
+    </joint>
+
+    <link name="${device_namespace}_mounting_point">
+      <visual>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+        <geometry>
+          <mesh filename="package://ros_components_description/meshes/teltonika_003R-00253.dae" />
+        </geometry>
+      </visual>
+
+      <collision>
+        <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
+        <geometry>
+          <mesh
+            filename="package://ros_components_description/meshes/teltonika_003R-00253_collision.stl" />
+        </geometry>
+      </collision>
+
+      <inertial>
+        <origin xyz="0.045 0.0 0.0058" rpy="0.0 0.0 0.0" />
+        <mass value="0.59" />
+        <inertia ixx="0.003964" ixy="0.0000000" ixz="0.0"
+                                iyy="0.0003964" iyz="0.0"
+                                                izz="0.0004177" />
+      </inertial>
+    </link>
+
+    <joint
+      name="antenna_to_${device_namespace.rstrip('_link')}_joint"
+      type="fixed">
+      <origin xyz="0.045 0.0 0.0058" rpy="0.0 0.0 0.0" />
+      <parent link="${device_namespace}_mounting_point" />
+      <child link="${device_namespace}" />
+    </joint>
+
+    <link name="${device_namespace}" />
+
+    <gazebo reference="${device_namespace}">
+      <sensor name="navsat" type="navsat">
+        <plugin filename="ignition-gazebo-navsat-system" name="ignition::gazebo::systems::NavSat" />
+        <always_on>1</always_on>
+        <update_rate>1</update_rate>
+        <topic>${ns}${device_namespace}/fix</topic>
+        <ignition_frame_id>${ns}${device_namespace}</ignition_frame_id>
+      </sensor>
+    </gazebo>
+  </xacro:macro>
+</robot>

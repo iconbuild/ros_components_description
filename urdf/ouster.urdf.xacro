@@ -1,9 +1,52 @@
 <?xml version="1.0"?>
 <robot xmlns:xacro="http://www.ros.org/wiki/xacro">
-    <xacro:macro name="ouster_os1_32"
+    <xacro:macro name="ouster"
                params="parent_link xyz rpy
+                       model:=os1_32
                        namespace:=None
                        device_namespace:=None">
+
+    <xacro:if value="${model == 'os0_32'}">
+      <xacro:property name="vfov" value="${radians(90.0)}" scope="parent" />
+      <xacro:property name="lidar_range" value="50" scope="parent"/>
+      <xacro:property name="layers" value="32" scope="parent"/>
+      <xacro:property name="mesh" value="ouster_os01" scope="parent"/>
+    </xacro:if>
+
+    <xacro:if value="${model == 'os0_64'}">
+      <xacro:property name="vfov" value="${radians(90.0)}" scope="parent" />
+      <xacro:property name="lidar_range" value="50" scope="parent" />
+      <xacro:property name="layers" value="64" scope="parent" />
+      <xacro:property name="mesh" value="ouster_os01" scope="parent"/>
+    </xacro:if>
+
+    <xacro:if value="${model == 'os0_128'}">
+      <xacro:property name="vfov" value="${radians(90.0)}" scope="parent" />
+      <xacro:property name="lidar_range" value="50" scope="parent" />
+      <xacro:property name="layers" value="128" scope="parent" />
+      <xacro:property name="mesh" value="ouster_os01" scope="parent"/>
+    </xacro:if>
+
+    <xacro:if value="${model == 'os1_32'}">
+      <xacro:property name="vfov" value="${radians(45.0)}" scope="parent" />
+      <xacro:property name="lidar_range" value="120" scope="parent" />
+      <xacro:property name="layers" value="32" scope="parent" />
+      <xacro:property name="mesh" value="ouster_os01" scope="parent"/>
+    </xacro:if>
+
+    <xacro:if value="${model == 'os1_64'}">
+      <xacro:property name="vfov" value="${radians(45.0)}" scope="parent" />
+      <xacro:property name="lidar_range" value="120" scope="parent" />
+      <xacro:property name="layers" value="64" scope="parent" />
+      <xacro:property name="mesh" value="ouster_os01" scope="parent"/>
+    </xacro:if>
+
+    <xacro:if value="${model == 'os1_128'}">
+      <xacro:property name="vfov" value="${radians(45.0)}" scope="parent" />
+      <xacro:property name="lidar_range" value="120" scope="parent" />
+      <xacro:property name="layers" value="128" scope="parent" />
+      <xacro:property name="mesh" value="ouster_os01" scope="parent"/>
+    </xacro:if>
 
     <xacro:if value="${namespace == 'None'}">
       <xacro:property name="ns" value="" />
@@ -26,17 +69,17 @@
       <xacro:property name="prefix" value="${device_namespace}_" />
     </xacro:unless>
 
-    <joint name="${parent_link.rstrip('_link')}_to_${prefix}ouster_os1_32_joint" type="fixed">
+    <joint name="${parent_link.rstrip('_link')}_to_${prefix}ouster_${model}_joint" type="fixed">
       <origin xyz="${xyz}" rpy="${rpy}" />
       <parent link="${parent_link}" />
-      <child link="${prefix}ouster_os1_32_link" />
+      <child link="${prefix}ouster_${model}_link" />
     </joint>
 
-    <link name="${prefix}ouster_os1_32_link">
+    <link name="${prefix}ouster_${model}_link">
       <visual>
         <origin xyz="0.0 0.0 0.0" rpy="0.0 0.0 0.0" />
         <geometry>
-          <mesh filename="package://ros_components_description/meshes/ouster_os1_32.dae" />
+          <mesh filename="package://ros_components_description/meshes/${mesh}.dae" />
         </geometry>
       </visual>
 
@@ -56,9 +99,9 @@
       </inertial>
     </link>
 
-    <joint name="${prefix}ouster_os1_32_to_${prefix}os_lidar_joint" type="fixed">
+    <joint name="${prefix}ouster_${model}_to_${prefix}os_lidar_joint" type="fixed">
       <origin xyz="0.0 0.0 0.03618" rpy="0.0 0.0 0.0" />
-      <parent link="${prefix}ouster_os1_32_link" />
+      <parent link="${prefix}ouster_${model}_link" />
       <child link="${prefix}os_lidar" />
     </joint>
 
@@ -67,7 +110,7 @@
     <gazebo reference="${prefix}os_lidar">
       <!-- gpu_lidar has to be set, CPU lidar doesn't work in ignition -
       https://github.com/gazebosim/gz-sensors/issues/26 -->
-      <sensor type="gpu_lidar" name="${ns}${prefix}ouster_os1_32_sensor">
+      <sensor type="gpu_lidar" name="${ns}${prefix}ouster_${model}_sensor">
         <visualize>false</visualize>
         <ray>
           <scan>
@@ -78,15 +121,15 @@
               <max_angle>${pi}</max_angle>
             </horizontal>
             <vertical>
-              <samples>32</samples>
+              <samples>${layers}</samples>
               <resolution>1</resolution>
-              <min_angle>-${22.5/180.0*pi}</min_angle>
-              <max_angle>${22.5/180.0*pi}</max_angle>
+              <min_angle>${vfov/-2.0}</min_angle>
+              <max_angle>${vfov/2.0}</max_angle>
             </vertical>
           </scan>
           <range>
             <min>0.8</min>
-            <max>120.0</max>
+            <max>${lidar_range}</max>
             <resolution>0.003</resolution>
           </range>
 
@@ -103,11 +146,6 @@
         <frame_id>${ns}${prefix}os_lidar</frame_id>
         <ignition_frame_id>${ns}${prefix}os_lidar</ignition_frame_id>
         <always_on>true</always_on>
-
-        <ros>
-          <namespace>${ns}${device_ns}</namespace>
-        </ros>
-
       </sensor>
     </gazebo>
   </xacro:macro>

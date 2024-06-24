@@ -184,7 +184,7 @@
           <always_on>1</always_on>
           <update_rate>${camera_fps}</update_rate>
           <visualize>true</visualize>
-          <topic>${ns}wrist_mounted_camera</topic>
+          <topic>${ns}${device_namespace}/wrist_mounted_camera</topic>
           <enable_metrics>false</enable_metrics>
         </sensor>
       </gazebo>

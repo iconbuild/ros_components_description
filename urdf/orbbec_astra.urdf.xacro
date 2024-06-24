@@ -100,7 +100,7 @@
         <topic>${ns}${device_namespace}/color/image_raw</topic>
         <visualize>false</visualize>
 
-        <ignition_frame_id>${device_namespace}_color_optical_frame</ignition_frame_id>
+        <ignition_frame_id>${ns}${device_namespace}_color_optical_frame</ignition_frame_id>
         <horizontal_fov>${60.0/180.0*pi}</horizontal_fov>
         <image>
           <width>640</width>
@@ -111,9 +111,6 @@
           <near>0.6</near>
           <far>8.0</far>
         </clip>
-        <ros>
-          <namespace>${ns}</namespace>
-        </ros>
       </sensor>
 
       <sensor type="depth_camera" name="${ns}${device_namespace}_orbbec_astra_depth">
@@ -124,7 +121,7 @@
         <topic>${ns}${device_namespace}/depth/image_raw</topic>
         <visualize>false</visualize>
 
-        <ignition_frame_id>${device_namespace}_depth_optical_frame</ignition_frame_id>
+        <ignition_frame_id>${ns}${device_namespace}_depth_optical_frame</ignition_frame_id>
         <camera>
           <horizontal_fov>${60.0/180.0*pi}</horizontal_fov>
           <image>
@@ -142,9 +139,6 @@
             <stddev>0.005</stddev>
           </noise>
         </camera>
-        <ros>
-          <namespace>${ns}${device_namespace}</namespace>
-        </ros>
       </sensor>
     </gazebo>
 

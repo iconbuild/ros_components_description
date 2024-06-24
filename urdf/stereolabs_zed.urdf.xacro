@@ -1,6 +1,7 @@
 <?xml version="1.0"?>
 
 <!--
+// Copyright 2024 Husarion sp. z o.o.
 // Copyright 2022 Stereolabs
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
@@ -106,7 +107,7 @@
         </geometry>
       </collision>
     </link>
-    <joint name="${device_namespace}_center_joint" type="fixed">
+    <joint name="${device_namespace}_camera_center_joint" type="fixed">
       <parent link="${device_namespace}_link" />
       <child link="${device_namespace}_center" />
       <origin xyz="0 0 ${height/2}" rpy="0 ${bottom_slope} 0" />
@@ -199,9 +200,6 @@
             <far>300.0</far>
           </clip>
         </camera>
-        <ros>
-          <namespace>${ns}</namespace>
-        </ros>
       </sensor>
 
       <sensor type="depth_camera" name="${ns}${device_namespace}_stereolabs_zed_depth">
@@ -228,9 +226,7 @@
             <stddev>0.03</stddev>
           </noise>
         </camera>
-        <ros>
-          <namespace>${ns}${device_namespace}</namespace>
-        </ros>
+
       </sensor>
     </gazebo>
 

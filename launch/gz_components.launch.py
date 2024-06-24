@@ -13,17 +13,18 @@
 # limitations under the License.
 
 import os
+
 import yaml
 from ament_index_python.packages import get_package_share_directory
+
 from launch import LaunchDescription
 from launch.actions import (
     DeclareLaunchArgument,
     IncludeLaunchDescription,
     OpaqueFunction,
 )
-
 from launch.launch_description_sources import PythonLaunchDescriptionSource
-from launch.substitutions import LaunchConfiguration, EnvironmentVariable
+from launch.substitutions import EnvironmentVariable, LaunchConfiguration
 
 
 def get_value(node: yaml.Node, key: str):
@@ -41,7 +42,7 @@ def get_launch_description(name: str, package: str, namespace: str, component: y
     device_namespace = get_value(component, "device_namespace")
     robot_namespace = namespace
 
-    if not name.find("ur3") and not name.find("kinova"):
+    if "ur" not in name and "kinova" not in name and "robotiq" not in name:
         if len(robot_namespace) and robot_namespace[0] != "/":
             robot_namespace = "/" + robot_namespace
         if len(device_namespace) and device_namespace[0] != "/":
@@ -63,13 +64,22 @@ def get_launch_descriptions_from_yaml_node(
     actions = []
 
     components_types_with_names = {
+        "ANT02": "teltonika",
         "LDR01": "slamtec_rplidar",
         "LDR02": "slamtec_rplidar",
         "LDR06": "slamtec_rplidar",
+        "LDR10": "ouster_os",
+        "LDR11": "ouster_os",
+        "LDR12": "ouster_os",
         "LDR13": "ouster_os",
+        "LDR14": "ouster_os",
+        "LDR15": "ouster_os",
         "LDR20": "velodyne",
         "CAM01": "orbbec_astra",
         "CAM02": "oak",
+        "CAM03": "stereolabs_zed",
+        "CAM04": "stereolabs_zed",
+        "CAM06": "stereolabs_zed",
         "MAN01": "ur",
         "MAN02": "ur",
         # "MAN03": "kinova_lite"  sim_isaac error
@@ -103,11 +113,11 @@ def launch_setup(context, *args, **kwargs):
     if components_config_path == "None":
         return []
 
-    with open(os.path.join(components_config_path), 'r') as file:
+    with open(os.path.join(components_config_path)) as file:
         components_config = yaml.safe_load(file)
 
     actions = []
-    if components_config != None:
+    if components_config is not None:
         actions += get_launch_descriptions_from_yaml_node(
             components_config, ros_components_description, namespace
         )

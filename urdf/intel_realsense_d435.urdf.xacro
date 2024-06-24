@@ -37,9 +37,9 @@
     <xacro:property name="d435_cam_depth_to_infra2_offset" value="-0.050" />
     <xacro:property name="d435_cam_depth_to_color_offset" value="0.015" />
 
-    <!-- The following values model the aluminum peripherial case for the
+    <!-- The following values model the aluminum peripheral case for the
       D435 camera, with the camera joint represented by the actual
-      peripherial camera tripod mount -->
+      peripheral camera tripod mount -->
     <xacro:property name="d435_cam_width" value="0.090" />
     <xacro:property name="d435_cam_height" value="0.025" />
     <xacro:property name="d435_cam_depth" value="0.02505" />
@@ -52,7 +52,7 @@
     <xacro:property name="d435_mesh_x_offset"
       value="${d435_cam_mount_from_center_offset-d435_glass_to_front-d435_zero_depth_to_glass}" />
 
-    <!-- The following offset is relative the the physical D435 camera peripherial
+    <!-- The following offset is relative the the physical D435 camera peripheral
       camera tripod mount -->
     <xacro:property name="d435_cam_depth_px" value="${d435_cam_mount_from_center_offset}" />
     <xacro:property name="d435_collision_offset_x" value="0.00824" />
@@ -192,9 +192,7 @@
           <near>0.02</near>
           <far>300.0</far>
         </clip>
-        <ros>
-          <namespace>${ns}${device_namespace}</namespace>
-        </ros>
+
       </sensor>
 
       <sensor type="depth_camera" name="${ns}${device_namespace}_intel_realsense_d435_depth">
@@ -222,9 +220,7 @@
             <stddev>0.005</stddev>
           </noise>
         </camera>
-        <ros>
-          <namespace>${ns}${device_namespace}</namespace>
-        </ros>
+
       </sensor>
     </gazebo>
   </xacro:macro>

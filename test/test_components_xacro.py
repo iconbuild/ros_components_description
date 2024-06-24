@@ -13,11 +13,12 @@
 # limitations under the License.
 
 
+import os
+import xml
 import xml.dom
 import xml.dom.minidom
-import os
+
 import xacro
-import xml
 import yaml
 from ament_index_python.packages import get_package_share_directory
 
@@ -26,11 +27,19 @@ xacro_path = os.path.join(ros_components_description, "test/component.urdf.xacro
 
 # Type: [model_link, link_name, sensor_link_name, sensor_name]
 components_types_with_names = {
-    "LDR01": ["slamtec_rplidar_s1", "laser", "laser", "slamtec_rplidar_s1_sensor"],
-    "LDR06": ["slamtec_rplidar_s3", "laser", "laser", "slamtec_rplidar_s3_sensor"],
+    "LDR01": ["slamtec_rplidar_s1", "laser", "laser", "slamtec_rplidar_sensor"],
+    "LDR06": ["slamtec_rplidar_s3", "laser", "laser", "slamtec_rplidar_sensor"],
+    "LDR10": ["ouster_os0_32", "os_lidar", "os_lidar", "ouster_os0_32_sensor"],
+    "LDR11": ["ouster_os0_64", "os_lidar", "os_lidar", "ouster_os0_64_sensor"],
+    "LDR12": ["ouster_os0_128", "os_lidar", "os_lidar", "ouster_os0_128_sensor"],
     "LDR13": ["ouster_os1_32", "os_lidar", "os_lidar", "ouster_os1_32_sensor"],
+    "LDR14": ["ouster_os1_64", "os_lidar", "os_lidar", "ouster_os1_64_sensor"],
+    "LDR15": ["ouster_os1_128", "os_lidar", "os_lidar", "ouster_os1_128_sensor"],
     "LDR20": ["velodyne_puck", "velodyne", "velodyne", "velodyne_puck_sensor"],
     "CAM01": ["orbbec_astra", "link", "link", "orbbec_astra_color"],
+    "CAM03": ["zed2", "center", "center_optical_frame", "stereolabs_zed_depth"],
+    "CAM04": ["zed2i", "center", "center_optical_frame", "stereolabs_zed_depth"],
+    "CAM06": ["zedi", "center", "center_optical_frame", "stereolabs_zed_depth"],
     "MAN01": ["ur3e", "base_link", "", ""],
     "MAN02": ["ur5e", "base_link", "", ""],
     # "MAN03": ["kinova_lite",               "base_link",    "",         ""], use_isaac error
@@ -76,26 +85,26 @@ class ComponentsYamlParseUtils:
             self._urdf = xacro.process_file(
                 xacro_path, mappings={"components_config_path": self.components_config_path}
             )
-        except xacro.XacroException as e:
+        except xacro.XacroException:
             return False
         return True
 
     def does_link_exist(self, doc: xml.dom.minidom.Document, link_name: str) -> bool:
-        links = doc.getElementsByTagName('link')
+        links = doc.getElementsByTagName("link")
         for link in links:
-            if link.getAttribute('name') == link_name:
+            if link.getAttribute("name") == link_name:
                 return True
         return False
 
     def does_sensor_name_exist(
         self, doc: xml.dom.minidom.Document, link_name: str, sensor_name: str
     ) -> bool:
-        gazebos_tags = doc.getElementsByTagName('gazebo')
+        gazebos_tags = doc.getElementsByTagName("gazebo")
         for tag in gazebos_tags:
-            if tag.getAttribute('reference') == link_name:
-                sensors = doc.getElementsByTagName('sensor')
+            if tag.getAttribute("reference") == link_name:
+                sensors = doc.getElementsByTagName("sensor")
                 for sensor in sensors:
-                    if sensor.getAttribute('name') == sensor_name:
+                    if sensor.getAttribute("name") == sensor_name:
                         return True
 
         return False

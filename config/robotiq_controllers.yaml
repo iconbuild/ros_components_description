@@ -1,3 +1,4 @@
+---
 /**:
   robotiq_gripper_controller:
     ros__parameters:
@@ -10,4 +11,3 @@
     ros__parameters:
       default: true
       joint: robotiq_85_left_knuckle_joint
-

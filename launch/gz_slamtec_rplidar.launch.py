@@ -13,12 +13,14 @@
 # limitations under the License.
 
 import os
+
+from ament_index_python import get_package_share_directory
+from launch_ros.actions import Node
+from nav2_common.launch import ReplaceString
+
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument
-from launch_ros.actions import Node
 from launch.substitutions import EnvironmentVariable, LaunchConfiguration
-from nav2_common.launch import ReplaceString
-from ament_index_python import get_package_share_directory
 
 
 def generate_launch_description():
@@ -33,7 +35,10 @@ def generate_launch_description():
 
     namespaced_gz_bridge_config_path = ReplaceString(
         source_file=gz_bridge_config_path,
-        replacements={"<robot_namespace>": robot_namespace, "<device_namespace>": device_namespace},
+        replacements={
+            "<robot_namespace>": robot_namespace,
+            "<device_namespace>": device_namespace,
+        },
     )
 
     declare_device_namespace = DeclareLaunchArgument(

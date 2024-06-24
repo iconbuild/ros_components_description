@@ -13,14 +13,12 @@
 # limitations under the License.
 
 import os
-
-from ament_index_python import get_package_share_directory
-from launch_ros.actions import Node
-from nav2_common.launch import ReplaceString
-
 from launch import LaunchDescription
 from launch.actions import DeclareLaunchArgument, OpaqueFunction
+from launch_ros.actions import Node
 from launch.substitutions import EnvironmentVariable, LaunchConfiguration
+from nav2_common.launch import ReplaceString
+from ament_index_python import get_package_share_directory
 
 
 # The frame of the point cloud from ignition gazebo 6 isn't provided by <frame_id>.
@@ -35,15 +33,15 @@ def fix_depth_image_tf(context, *args, **kwargs):
     if device_namespace.startswith('/'):
         device_namespace = device_namespace[1:]
 
-    parent_frame = robot_namespace + device_namespace + "_depth_optical_frame"
-    child_frame = "panther/base_link/" + robot_namespace + device_namespace + "_orbbec_astra_depth"
+    parent_frame = robot_namespace + device_namespace + "_center_optical_frame"
+    child_frame = "panther/base_link/" + robot_namespace + device_namespace + "_stereolabs_zed_depth"
 
     static_transform_publisher = Node(
         package="tf2_ros",
         executable="static_transform_publisher",
         name="point_cloud_tf",
         output="log",
-        arguments=["0", "0", "0", "1.57", "-1.57", "0", parent_frame, child_frame],
+        arguments=["0", "0", "0", "0", "0", "0", parent_frame, child_frame],
         parameters=[{"use_sim_time": True}],
         namespace=robot_namespace,
     )
@@ -53,7 +51,7 @@ def fix_depth_image_tf(context, *args, **kwargs):
 def generate_launch_description():
     ros_components_description = get_package_share_directory("ros_components_description")
     gz_bridge_config_path = os.path.join(
-        ros_components_description, "config", "gz_orbbec_astra_remappings.yaml"
+        ros_components_description, "config", "gz_stereolabs_zed_remappings.yaml"
     )
 
     robot_namespace = LaunchConfiguration("robot_namespace")

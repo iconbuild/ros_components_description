@@ -12,12 +12,19 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from launch import LaunchDescription
-from launch.actions import DeclareLaunchArgument
 from launch_ros.actions import Node
-from launch.substitutions import EnvironmentVariable, LaunchConfiguration, PathJoinSubstitution, PythonExpression
 from launch_ros.substitutions import FindPackageShare
 from nav2_common.launch import ReplaceString
+
+from launch import LaunchDescription
+from launch.actions import DeclareLaunchArgument
+from launch.substitutions import (
+    EnvironmentVariable,
+    LaunchConfiguration,
+    PathJoinSubstitution,
+    PythonExpression,
+)
+
 
 def generate_launch_description():
     robot_namespace = LaunchConfiguration("robot_namespace")
@@ -26,7 +33,6 @@ def generate_launch_description():
     initial_joint_controllers = PathJoinSubstitution(
         [FindPackageShare("ros_components_description"), "config", "robotiq_controllers.yaml"]
     )
-
 
     # Using robot_namespace as prefix for controller name is caused by
     # https://github.com/ros-controls/ros2_control/issues/1506
@@ -39,8 +45,18 @@ def generate_launch_description():
         source_file=initial_joint_controllers,
         replacements={
             "robotiq_85_left_knuckle_joint": [device_namespace, "_robotiq_85_left_knuckle_joint"],
-            "  robotiq_gripper_controller:": ["  ", robot_namespace_ext, device_namespace, "_robotiq_gripper_controller:"],
-            "  robotiq_activation_controller:": ["  ", robot_namespace_ext, device_namespace, "_robotiq_activation_controller:"],
+            "  robotiq_gripper_controller:": [
+                "  ",
+                robot_namespace_ext,
+                device_namespace,
+                "_robotiq_gripper_controller:",
+            ],
+            "  robotiq_activation_controller:": [
+                "  ",
+                robot_namespace_ext,
+                device_namespace,
+                "_robotiq_activation_controller:",
+            ],
         },
     )
 
@@ -63,7 +79,7 @@ def generate_launch_description():
             # Using robot_namespace as prefix for controller name is caused by
             # https://github.com/ros-controls/ros2_control/issues/1506
             # After this fix the device_namespace and --namespace should be used.
-            [robot_namespace_ext , device_namespace, "_robotiq_gripper_controller"],
+            [robot_namespace_ext, device_namespace, "_robotiq_gripper_controller"],
             "-t",
             "position_controllers/GripperActionController",
             "-c",

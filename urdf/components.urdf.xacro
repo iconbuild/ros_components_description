@@ -25,7 +25,29 @@
       <xacro:property name="parent_link" value="${component['parent_link']}" scope="parent" />
       <xacro:property name="xyz" value="${component['xyz']}" scope="parent" />
       <xacro:property name="rpy" value="${component['rpy']}" scope="parent" />
-      <xacro:property name="device_namespace" value="${component['device_namespace']}" scope="parent" />
+      <xacro:property name="device_namespace" value="${component['device_namespace']}"
+        scope="parent" />
+
+      <xacro:if value="${robot_namespace == ''}">
+        <xacro:property name="ns" value="None" scope="parent" />
+      </xacro:if>
+      <xacro:unless value="${robot_namespace == ''}">
+        <xacro:property name="ns" value="${robot_namespace}" scope="parent" />
+      </xacro:unless>
+
+      <xacro:if value="${type == 'ANT02'}">
+        <xacro:include
+          filename="$(find ros_components_description)/urdf/teltonika_003R-00253.urdf.xacro"
+          ns="teltonika" />
+
+        <xacro:teltonika.teltonika_003R-00253
+          parent_link="${parent_link}"
+          xyz="${xyz}"
+          rpy="${rpy}"
+          namespace="${ns}"
+          device_namespace="${device_namespace}"
+        />
+      </xacro:if>
 
       <xacro:if value="${type == 'CAM01'}">
         <xacro:include
@@ -36,7 +58,7 @@
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
-          namespace="${robot_namespace}"
+          namespace="${ns}"
           device_namespace="${device_namespace}"
         />
       </xacro:if>
@@ -55,63 +77,73 @@
         />
       </xacro:if>
 
-      <xacro:if value="${type == 'LDR01'}">
-        <xacro:include
-          filename="$(find ros_components_description)/urdf/slamtec_rplidar_s1.urdf.xacro"
-          ns="lidar"
-        />
+      <xacro:property name="zed_models_dict"
+        value="${dict ([
+        ('CAM03', 'zed2'),
+        ('CAM04', 'zed2i'),
+        ('CAM06', 'zedx'),
+        ])}" />
 
-        <xacro:lidar.slamtec_rplidar_s1
+        <xacro:if value="${type in zed_models_dict}">
+        <xacro:include
+          filename="$(find ros_components_description)/urdf/stereolabs_zed.urdf.xacro"
+          ns="camera" />
+
+        <xacro:camera.zed_camera
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
-          namespace="${robot_namespace}"
+          namespace="${ns}"
           device_namespace="${device_namespace}"
+          model="${zed_models_dict[type]}"
         />
       </xacro:if>
 
-      <xacro:if value="${type == 'LDR02'}">
+      <xacro:property name="rplidar_models_dict"
+        value="${dict ([
+        ('LDR01', 's1'),
+        ('LDR02', 's2'),
+        ('LDR06', 's3'),
+      ])}" />
+
+      <xacro:if value="${type in rplidar_models_dict}">
         <xacro:include
-          filename="$(find ros_components_description)/urdf/slamtec_rplidar_s2.urdf.xacro"
+          filename="$(find ros_components_description)/urdf/slamtec_rplidar.urdf.xacro"
           ns="lidar"
         />
 
-        <xacro:lidar.slamtec_rplidar_s2
+        <xacro:lidar.slamtec_rplidar
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
-          namespace="${robot_namespace}"
+          namespace="${ns}"
           device_namespace="${device_namespace}"
+          model="${rplidar_models_dict[type]}"
         />
       </xacro:if>
 
-      <xacro:if value="${type == 'LDR06'}">
+      <xacro:property name="ouster_models_dict"
+        value="${dict ([
+        ('LDR10', 'os0_32'),
+        ('LDR11', 'os0_64'),
+        ('LDR12', 'os0_128'),
+        ('LDR13', 'os1_32'),
+        ('LDR14', 'os1_64'),
+        ('LDR15', 'os1_128')
+      ])}" />
+
+      <xacro:if value="${type in ouster_models_dict}">
         <xacro:include
-          filename="$(find ros_components_description)/urdf/slamtec_rplidar_s3.urdf.xacro"
+          filename="$(find ros_components_description)/urdf/ouster.urdf.xacro"
           ns="lidar"
         />
-
-        <xacro:lidar.slamtec_rplidar_s3
+        <xacro:lidar.ouster
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
-          namespace="${robot_namespace}"
+          namespace="${ns}"
           device_namespace="${device_namespace}"
-        />
-      </xacro:if>
-
-      <xacro:if value="${type == 'LDR13'}">
-        <xacro:include
-          filename="$(find ros_components_description)/urdf/ouster_os1_32.urdf.xacro"
-          ns="lidar"
-        />
-
-        <xacro:lidar.ouster_os1_32
-          parent_link="${parent_link}"
-          xyz="${xyz}"
-          rpy="${rpy}"
-          namespace="${robot_namespace}"
-          device_namespace="${device_namespace}"
+          model="${ouster_models_dict[type]}"
         />
       </xacro:if>
 
@@ -125,7 +157,7 @@
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
-          namespace="${robot_namespace}"
+          namespace="${ns}"
           device_namespace="${device_namespace}"
         />
       </xacro:if>
@@ -171,6 +203,7 @@
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
+          namespace="${ns}"
           device_namespace="${device_namespace}"
           kinova_type="gen3"
           dof="6"
@@ -189,6 +222,7 @@
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
+          namespace="${ns}"
           device_namespace="${device_namespace}"
           kinova_type="gen3"
           dof="6"
@@ -196,7 +230,6 @@
           vision="true"
         />
       </xacro:if>
-
 
       <xacro:if value="${type == 'MAN06'}">
         <xacro:include
@@ -208,6 +241,7 @@
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
+          namespace="${ns}"
           device_namespace="${device_namespace}"
           kinova_type="gen3"
           dof="7"
@@ -226,6 +260,7 @@
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
+          namespace="${ns}"
           kinova_type="gen3"
           dof="7"
           gripper="robotiq_2f_85"
@@ -242,6 +277,7 @@
           parent_link="${parent_link}"
           xyz="${xyz}"
           rpy="${rpy}"
+          namespace="${ns}"
           device_namespace="${device_namespace}"
           robotiq_type="2f_85"
         />
