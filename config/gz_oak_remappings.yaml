@@ -1,0 +1,15 @@
+---
+# https://github.com/orbbec/OrbbecSDK_ROS2#all-available-topics
+  - topic_name: <robot_namespace><device_namespace>/<camera_name>/camera_info
+    ros_type_name: sensor_msgs/msg/CameraInfo
+    gz_type_name: ignition.msgs.CameraInfo
+    lazy: true
+    direction: GZ_TO_ROS
+
+  - topic_name: <robot_namespace><device_namespace>/<camera_name>/image_raw
+    ros_type_name: sensor_msgs/msg/Image
+    gz_type_name: ignition.msgs.Image
+    lazy: true
+    direction: GZ_TO_ROS
+
+

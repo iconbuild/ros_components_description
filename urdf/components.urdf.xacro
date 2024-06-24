@@ -63,6 +63,20 @@
         />
       </xacro:if>
 
+      <xacro:if value="${type == 'CAM02'}">
+        <xacro:include
+          filename="$(find ros_components_description)/urdf/luxonis_oak.urdf.xacro"
+          ns="camera" />
+
+        <xacro:camera.oak
+          parent_link="${parent_link}"
+          xyz="${xyz}"
+          rpy="${rpy}"
+          namespace="${robot_namespace}"
+          device_namespace="${device_namespace}"
+        />
+      </xacro:if>
+
       <xacro:property name="zed_models_dict"
         value="${dict ([
         ('CAM03', 'zed2'),
@@ -88,6 +102,7 @@
       <xacro:property name="rplidar_models_dict"
         value="${dict ([
         ('LDR01', 's1'),
+        ('LDR02', 's2'),
         ('LDR06', 's3'),
       ])}" />
 

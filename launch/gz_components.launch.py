@@ -66,6 +66,7 @@ def get_launch_descriptions_from_yaml_node(
     components_types_with_names = {
         "ANT02": "teltonika",
         "LDR01": "slamtec_rplidar",
+        "LDR02": "slamtec_rplidar",
         "LDR06": "slamtec_rplidar",
         "LDR10": "ouster_os",
         "LDR11": "ouster_os",
@@ -75,6 +76,7 @@ def get_launch_descriptions_from_yaml_node(
         "LDR15": "ouster_os",
         "LDR20": "velodyne",
         "CAM01": "orbbec_astra",
+        "CAM02": "oak",
         "CAM03": "stereolabs_zed",
         "CAM04": "stereolabs_zed",
         "CAM06": "stereolabs_zed",
